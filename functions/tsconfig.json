@@ -2,7 +2,12 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "moduleResolution": "Bundler",
     "lib": ["ESNext"],
-    "types": ["@cloudflare/workers-types"]
+    "types": ["@cloudflare/workers-types", "./env.d.ts"],
+    "strict": true,
+    "paths": {
+      "#/*": ["./*"]
+    }
   }
 }

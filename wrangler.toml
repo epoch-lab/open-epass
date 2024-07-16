@@ -6,7 +6,8 @@ pages_build_output_dir = "./dist"
 ip = "0.0.0.0"
 port = 3001
 
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "northwind-demo"
-# database_id = "<DATABASE_ID>"
+[[d1_databases]]
+binding = "DB"
+database_name = "epass-db"
+database_id = "929baaac-1126-4b4f-8564-347bf0ac8b89"
+preview_database_id = "DB"
