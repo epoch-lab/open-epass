@@ -9,17 +9,28 @@ export async function createUser(
     password: string
   }
 ) {
-  const result = await db
-    .prepare(
-      'INSERT INTO users (username, email, display_name, password) VALUES (?, ?, ?, ?)'
-    )
-    .bind(
-      args.username,
-      args.email,
-      args.displayName,
-      await hashPassword(args.password)
-    )
-    .run()
+  let result: D1Response
+  try {
+    result = await db
+      .prepare(
+        'INSERT INTO users (username, email, display_name, password) VALUES (?, ?, ?, ?)'
+      )
+      .bind(
+        args.username,
+        args.email,
+        args.displayName,
+        await hashPassword(args.password)
+      )
+      .run()
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes('UNIQUE constraint failed: users.username')
+    ) {
+      throw new Error('Duplicated username')
+    }
+    throw error
+  }
 
   if (!result.success) {
     throw new Error('Failed to create user')

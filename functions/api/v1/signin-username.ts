@@ -5,16 +5,15 @@ import { $parseBody } from '#/_utils/request'
 import { $responseErr, $responseOk } from '#/_utils/response'
 import { z } from 'zod'
 
+export const signinUsernameSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+  longer: z.boolean(),
+  // TODO: Add captcha.
+})
+
 export const onRequestPost: PagesFunction<Env> = async (c) => {
-  const data = await $parseBody(
-    c,
-    z.object({
-      username: z.string(),
-      password: z.string(),
-      longer: z.boolean(),
-      // TODO: Add captcha.
-    })
-  )
+  const data = await $parseBody(c, signinUsernameSchema)
 
   const userId = await loginUserByName(c.env.DB, {
     username: data.username,

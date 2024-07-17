@@ -14,7 +14,7 @@ function Page() {
       <HeroTitle>密码重置</HeroTitle>
 
       <div className="px-12 text-sm leading-loose">
-        <span className="opacity-50">想起密码？</span>
+        <span className="opacity-50">想起来了？</span>
         <Link to="/$appName/signin" params={{ appName }}>
           前往登录
         </Link>

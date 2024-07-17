@@ -47,7 +47,7 @@ function Page() {
         method: 'post',
         body: JSON.stringify(v),
       }),
-    onSuccess: () => {
+    onSuccess() {
       signupForm.setValue('email', verifyForm.getValues().email)
       setStage('signup')
     },
@@ -58,8 +58,13 @@ function Page() {
         method: 'post',
         body: JSON.stringify(v),
       }),
-    onSuccess: () => {
+    onSuccess() {
       setStage('done')
+    },
+    onError(e) {
+      if (e.message === 'Duplicated username') {
+        signupForm.setError('username', { message: '用户名重复，换一个吧' })
+      }
     },
   })
 
@@ -100,6 +105,16 @@ function Page() {
             >
               {verifyMutation.isPending ? <Spinner /> : '发送验证码'}
             </Button>
+            <button
+              className="opacity-50 transition hover:opacity-100 text-sm self-center mt-2"
+              onClick={verifyForm.handleSubmit(() => {
+                signupForm.setValue('email', verifyForm.getValues().email)
+                setStage('signup')
+              })}
+              disabled={verifyMutation.isPending}
+            >
+              已有验证码
+            </button>
           </>
         )}
 
@@ -137,16 +152,17 @@ function Page() {
             <TextInput
               icon={<IconLock stroke={1.5} size={18} />}
               placeholder="密码"
+              type="password"
               {...signupForm.register('password')}
             />
             <FormError error={signupForm.formState.errors.password} />
 
             <Button
               onClick={signupForm.handleSubmit(handleSignup)}
-              disabled={verifyMutation.isPending}
+              disabled={signupMutation.isPending}
               className="mt-4"
             >
-              {verifyMutation.isPending ? <Spinner /> : '注册'}
+              {signupMutation.isPending ? <Spinner /> : '注册'}
             </Button>
           </>
         )}
