@@ -1,5 +1,5 @@
 import { CODE_TIME_WINDOW_SIZE, SERVER_SECRET } from '#/_config'
-import { hmacSha256 } from '.'
+import { hmacSha256String } from '.'
 
 function getCurrentTimeWindow() {
   const timestamp = new Date().getTime()
@@ -11,7 +11,7 @@ export async function genCodeWithTimeWindow(
   timeWindow: number
 ) {
   const msg = payload + timeWindow.toString()
-  const fullCode = await hmacSha256(msg, SERVER_SECRET)
+  const fullCode = await hmacSha256String(msg, SERVER_SECRET)
 
   return fullCode.substring(0, 6)
 }

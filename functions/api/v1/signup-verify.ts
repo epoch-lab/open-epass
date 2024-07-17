@@ -1,5 +1,6 @@
 import { genCode } from '#/_crypto/verification-code'
 import { getUserByEmail } from '#/_db/users'
+import { sendSignupVerifyCodeEmail } from '#/_utils/email'
 import { $parseBody } from '#/_utils/request'
 import { $responseOk } from '#/_utils/response'
 import { z } from 'zod'
@@ -19,7 +20,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
 
   const result = await genCode(data.email)
 
-  console.log(result)
+  await sendSignupVerifyCodeEmail(data.email, result.code, result.expiration)
 
   return $responseOk(null)
 }

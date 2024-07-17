@@ -8,7 +8,7 @@ export const Button = forwardRef<
   return (
     <button
       className={cn(
-        'bg-blue-500 grid place-items-center text-white h-10 px-4 rounded-md transition hover:bg-blue-600',
+        'bg-blue-500 grid place-items-center text-white h-10 px-4 rounded-md transition enabled:hover:bg-blue-600 disabled:opacity-50',
         className
       )}
       ref={ref}

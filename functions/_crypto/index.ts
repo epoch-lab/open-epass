@@ -10,25 +10,32 @@ export async function sha256(s: string) {
   return hashHex
 }
 
-export async function hmacSha256(msg: string, key: string) {
-  const enc = new TextEncoder()
-  const keyBuffer = enc.encode(key)
-  const msgBuffer = enc.encode(msg)
-
+export async function hmacSha256Buffer(
+  msg: ArrayBuffer | ArrayBufferView,
+  key: ArrayBuffer | ArrayBufferView | JsonWebKey
+) {
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
-    keyBuffer,
+    key,
     { name: 'HMAC', hash: { name: 'SHA-256' } },
     false,
     ['sign']
   )
 
-  const signatureBuffer = await crypto.subtle.sign('HMAC', cryptoKey, msgBuffer)
+  const signatureBuffer = await crypto.subtle.sign('HMAC', cryptoKey, msg)
 
-  const signatureArray = Array.from(new Uint8Array(signatureBuffer))
-  const signatureHex = signatureArray
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('')
+  return new Uint8Array(signatureBuffer)
+}
 
-  return signatureHex
+export async function hmacSha256String(msg: string, key: string) {
+  const enc = new TextEncoder()
+  const keyBuffer = enc.encode(key)
+  const msgBuffer = enc.encode(msg)
+
+  return digestHex(await hmacSha256Buffer(msgBuffer, keyBuffer))
+}
+
+export function digestHex(data: Uint8Array) {
+  const arr = Array.from(data)
+  return arr.map((b) => b.toString(16).padStart(2, '0')).join('')
 }
