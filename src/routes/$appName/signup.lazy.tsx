@@ -65,6 +65,9 @@ function Page() {
       if (e.message === 'Duplicated username') {
         signupForm.setError('username', { message: '用户名重复，换一个吧' })
       }
+      if (e.message === 'Invalid email code') {
+        signupForm.setError('emailCode', { message: '邮箱验证码不正确' })
+      }
     },
   })
 
@@ -88,7 +91,7 @@ function Page() {
         </Link>
       </div>
 
-      <div className="px-12 mt-5 flex flex-col">
+      <div className="px-12 mt-3 flex flex-col">
         {stage === 'verify' && (
           <>
             <TextInput
@@ -160,10 +163,19 @@ function Page() {
             <Button
               onClick={signupForm.handleSubmit(handleSignup)}
               disabled={signupMutation.isPending}
-              className="mt-4"
+              className="mt-2"
             >
               {signupMutation.isPending ? <Spinner /> : '注册'}
             </Button>
+            <button
+              className="opacity-50 transition hover:opacity-100 text-sm self-center mt-2"
+              onClick={verifyForm.handleSubmit(() => {
+                setStage('verify')
+              })}
+              disabled={signupMutation.isPending}
+            >
+              返回
+            </button>
           </>
         )}
 
