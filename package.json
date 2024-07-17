@@ -8,7 +8,9 @@
     "dev:api": "wrangler pages dev",
     "build": "tsc -b && vite build",
     "deploy": "wrangler pages deploy",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "init-db:local": "wrangler d1 execute epass-db --local --file=./schema.sql",
+    "init-db:remote": "wrangler d1 execute epass-db --remote --file=./schema.sql"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
