@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/checkbox'
 import { FormError } from '@/components/form-error'
 import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
+import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
 import { $fetch } from '@/utils/fetch'
 import { getValidTokenPayload, setToken } from '@/utils/token'
@@ -80,6 +81,9 @@ function Page() {
     onError: handleSigninError,
   })
 
+  const isLoading =
+    signinEmailMutatuion.isPending || signinUsernameMutatuion.isPending
+
   function handleSigninSuccess(token: string) {
     setToken(token)
     alert('登陆成功，你的 ID 是：' + getValidTokenPayload().userId)
@@ -135,8 +139,8 @@ function Page() {
         </div>
 
         <div className="mt-8 flex flex-col items-center px-12 gap-2">
-          <Button className="w-full" type="submit">
-            <IconArrowRight />
+          <Button className="w-full" type="submit" disabled={isLoading}>
+            {isLoading ? <Spinner /> : <IconArrowRight />}
           </Button>
           <Link
             to="/$appName/recovery"

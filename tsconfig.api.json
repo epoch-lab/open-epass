@@ -15,13 +15,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "types": ["@cloudflare/workers-types", "./functions/env.d.ts"],
-
-    "paths": {
-      "#/*": ["./functions/*"]
-    }
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["functions"]
 }
