@@ -12,14 +12,14 @@ export async function sha256(s: string) {
 
 export async function hmacSha256Buffer(
   msg: ArrayBuffer | ArrayBufferView,
-  key: ArrayBuffer | ArrayBufferView | JsonWebKey
+  key: ArrayBuffer | ArrayBufferView | JsonWebKey,
 ) {
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
     key,
     { name: 'HMAC', hash: { name: 'SHA-256' } },
     false,
-    ['sign']
+    ['sign'],
   )
 
   const signatureBuffer = await crypto.subtle.sign('HMAC', cryptoKey, msg)

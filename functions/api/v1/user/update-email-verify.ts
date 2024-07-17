@@ -12,7 +12,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     z.object({
       newEmail: z.string().email(),
       // TODO: Add captcha.
-    })
+    }),
   )
 
   if ((await getUserByEmail(c.env.DB, { email: data.newEmail })) !== null) {

@@ -91,7 +91,7 @@ function Page() {
         </Link>
       </div>
 
-      <div className="px-12 mt-3 flex flex-col">
+      <div className="mt-3 flex flex-col px-12">
         {stage === 'verify' && (
           <>
             <TextInput
@@ -109,7 +109,7 @@ function Page() {
               {verifyMutation.isPending ? <Spinner /> : '发送验证码'}
             </Button>
             <button
-              className="opacity-50 transition hover:opacity-100 text-sm self-center mt-2"
+              className="mt-2 self-center text-sm opacity-50 transition hover:opacity-100"
               onClick={verifyForm.handleSubmit(() => {
                 signupForm.setValue('email', verifyForm.getValues().email)
                 setStage('signup')
@@ -168,7 +168,7 @@ function Page() {
               {signupMutation.isPending ? <Spinner /> : '注册'}
             </Button>
             <button
-              className="opacity-50 transition hover:opacity-100 text-sm self-center mt-2"
+              className="mt-2 self-center text-sm opacity-50 transition hover:opacity-100"
               onClick={verifyForm.handleSubmit(() => {
                 setStage('verify')
               })}
@@ -184,9 +184,9 @@ function Page() {
             <IconCheck
               stroke={1}
               size={72}
-              className="text-blue-500 self-center mt-12"
+              className="mt-12 self-center text-blue-500"
             />
-            <p className="text-center text-sm mt-4 opacity-75">
+            <p className="mt-4 text-center text-sm opacity-75">
               注册成功 (&ang;・&omega;&lt; )⌒☆
             </p>
 

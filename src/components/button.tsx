@@ -8,8 +8,8 @@ export const Button = forwardRef<
   return (
     <button
       className={cn(
-        'bg-blue-500 grid place-items-center text-white h-10 px-4 rounded-md transition enabled:hover:bg-blue-600 disabled:opacity-50',
-        className
+        'grid h-10 place-items-center rounded-md bg-blue-500 px-4 text-white transition enabled:hover:bg-blue-600 disabled:opacity-50',
+        className,
       )}
       ref={ref}
       {...props}

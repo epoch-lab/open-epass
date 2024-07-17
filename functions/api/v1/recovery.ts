@@ -11,7 +11,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
       email: z.string().email(),
       emailCode: z.string(),
       newPassword: z.string(),
-    })
+    }),
   )
 
   if (!(await checkCode(data.email, data.emailCode))) {

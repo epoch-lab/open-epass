@@ -10,11 +10,11 @@ export const TextInput = forwardRef<
   return (
     <div className={cn('relative', className)}>
       <input
-        className="pl-10 disabled:bg-white pr-4 border-b h-10 outline-none min-w-0 w-full transition focus:border-blue-500 peer"
+        className="peer h-10 w-full min-w-0 border-b pl-10 pr-4 outline-none transition focus:border-blue-500 disabled:bg-white"
         ref={ref}
         {...props}
       />
-      <div className="absolute pointer-events-none inset-y-0 w-10 grid place-items-center peer-focus:text-blue-500 transition">
+      <div className="pointer-events-none absolute inset-y-0 grid w-10 place-items-center transition peer-focus:text-blue-500">
         {icon}
       </div>
     </div>

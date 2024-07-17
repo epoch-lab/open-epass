@@ -13,7 +13,7 @@ export async function signUserJwt(userId: number, expiration: string) {
 }
 
 export async function $parseUserJwt(
-  context: EventContext<Env, any, Record<string, unknown>>
+  context: EventContext<Env, any, Record<string, unknown>>,
 ) {
   const authHeader = context.request.headers.get('authorization')
   const jwt = authHeader?.replace(/^Bearer\s+/i, '')

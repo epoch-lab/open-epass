@@ -10,7 +10,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     c,
     z.object({
       newPassword: z.string(),
-    })
+    }),
   )
 
   await updateUserPasswordById(c.env.DB, {

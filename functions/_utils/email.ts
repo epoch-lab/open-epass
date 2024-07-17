@@ -16,7 +16,7 @@ export async function sendCodeEmail(
     opDesc: string
     code: string
     exp: number
-  }
+  },
 ) {
   const host = 'ses.tencentcloudapi.com'
   const service = 'ses'
@@ -77,12 +77,12 @@ export async function sendCodeEmail(
   const enc = new TextEncoder()
   const kDate = await hmacSha256Buffer(
     enc.encode(date),
-    enc.encode('TC3' + TENCENT_CLOUD_SECRET_KEY)
+    enc.encode('TC3' + TENCENT_CLOUD_SECRET_KEY),
   )
   const kService = await hmacSha256Buffer(enc.encode(service), kDate)
   const kSigning = await hmacSha256Buffer(enc.encode('tc3_request'), kService)
   const signature = digestHex(
-    await hmacSha256Buffer(enc.encode(stringToSign), kSigning)
+    await hmacSha256Buffer(enc.encode(stringToSign), kSigning),
   )
 
   const authorization =
@@ -122,7 +122,7 @@ export async function sendCodeEmail(
 export function sendSignupVerifyCodeEmail(
   dest: string,
   code: string,
-  exp: number
+  exp: number,
 ) {
   return sendCodeEmail(dest, {
     opTitle: '注册邮箱验证',

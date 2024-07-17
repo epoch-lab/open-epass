@@ -7,19 +7,19 @@ export async function createUser(
     email: string
     displayName: string
     password: string
-  }
+  },
 ) {
   let result: D1Response
   try {
     result = await db
       .prepare(
-        'INSERT INTO users (username, email, display_name, password) VALUES (?, ?, ?, ?)'
+        'INSERT INTO users (username, email, display_name, password) VALUES (?, ?, ?, ?)',
       )
       .bind(
         args.username,
         args.email,
         args.displayName,
-        await hashPassword(args.password)
+        await hashPassword(args.password),
       )
       .run()
   } catch (error) {
@@ -42,7 +42,7 @@ export async function loginUserByName(
   args: {
     username: string
     password: string
-  }
+  },
 ) {
   const result = await db
     .prepare('SELECT user_id, password FROM users WHERE username = ?')
@@ -65,7 +65,7 @@ export async function loginUserByEmail(
   args: {
     email: string
     password: string
-  }
+  },
 ) {
   const result = await db
     .prepare('SELECT user_id, password FROM users WHERE email = ?')
@@ -87,11 +87,11 @@ export async function getUserByEmail(
   db: D1Database,
   args: {
     email: string
-  }
+  },
 ) {
   const result = await db
     .prepare(
-      'SELECT user_id, username, display_name, email FROM users WHERE email = ?'
+      'SELECT user_id, username, display_name, email FROM users WHERE email = ?',
     )
     .bind(args.email)
     .first<{
@@ -116,11 +116,11 @@ export async function getUserById(
   db: D1Database,
   args: {
     userId: number
-  }
+  },
 ) {
   const result = await db
     .prepare(
-      'SELECT user_id, username, display_name, email FROM users WHERE user_id = ?'
+      'SELECT user_id, username, display_name, email FROM users WHERE user_id = ?',
     )
     .bind(args.userId)
     .first<{
@@ -146,7 +146,7 @@ export async function updateUserNameById(
   args: {
     userId: number
     newUsername: string
-  }
+  },
 ) {
   const result = await db
     .prepare('UPDATE users SET username = ? WHERE user_id = ?')
@@ -163,7 +163,7 @@ export async function updateUserDisplayNameById(
   args: {
     userId: number
     newDisplayName: string
-  }
+  },
 ) {
   const result = await db
     .prepare('UPDATE users SET display_name = ? WHERE user_id = ?')
@@ -180,7 +180,7 @@ export async function updateUserEmailById(
   args: {
     userId: number
     newEmail: string
-  }
+  },
 ) {
   const result = await db
     .prepare('UPDATE users SET email = ? WHERE user_id = ?')
@@ -197,7 +197,7 @@ export async function updateUserPasswordById(
   args: {
     userId: number
     newPassword: string
-  }
+  },
 ) {
   const hashedPassword = await hashPassword(args.newPassword)
 
@@ -216,7 +216,7 @@ export async function updateUserPasswordByEmail(
   args: {
     email: string
     newPassword: string
-  }
+  },
 ) {
   const hashedPassword = await hashPassword(args.newPassword)
 
@@ -234,7 +234,7 @@ export async function deleteUserById(
   db: D1Database,
   args: {
     userId: number
-  }
+  },
 ) {
   const result = await db
     .prepare('DELETE FROM users WHERE user_id = ?')

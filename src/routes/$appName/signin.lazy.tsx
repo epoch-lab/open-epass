@@ -40,7 +40,7 @@ function Page() {
         identity: z.string().min(1, '账号不能为空'),
         password: z.string().min(1, '密码不能为空'),
         longer: z.boolean(),
-      })
+      }),
     ),
   })
 
@@ -106,7 +106,7 @@ function Page() {
       </div>
 
       <form onSubmit={form.handleSubmit(handleSignup)}>
-        <div className="px-12 mt-16 flex flex-col">
+        <div className="mt-16 flex flex-col px-12">
           <TextInput
             icon={<IconUser stroke={1.5} size={18} />}
             placeholder="用户名 / 邮箱"
@@ -122,7 +122,7 @@ function Page() {
           />
           <FormError error={form.formState.errors.password} />
 
-          <label className="flex gap-2 items-center text-sm self-start cursor-pointer">
+          <label className="flex cursor-pointer items-center gap-2 self-start text-sm">
             <Controller
               name="longer"
               control={form.control}
@@ -138,7 +138,7 @@ function Page() {
           </label>
         </div>
 
-        <div className="mt-8 flex flex-col items-center px-12 gap-2">
+        <div className="mt-8 flex flex-col items-center gap-2 px-12">
           <Button className="w-full" type="submit" disabled={isLoading}>
             {isLoading ? <Spinner /> : <IconArrowRight />}
           </Button>

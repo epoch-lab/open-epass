@@ -12,7 +12,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     z.object({
       newEmail: z.string().email(),
       newEmailCode: z.string(),
-    })
+    }),
   )
 
   if (!(await checkCode(userId + data.newEmail, data.newEmailCode))) {

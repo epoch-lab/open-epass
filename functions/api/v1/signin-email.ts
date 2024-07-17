@@ -22,7 +22,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
 
   if (userId) {
     return $responseOk(
-      await signUserJwt(userId, data.longer ? JWT_EXP_LONG : JWT_EXP_NORMAL)
+      await signUserJwt(userId, data.longer ? JWT_EXP_LONG : JWT_EXP_NORMAL),
     )
   }
   return $responseErr('Invalid email or password')

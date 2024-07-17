@@ -11,7 +11,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     z.object({
       newUsername: z.optional(z.string()),
       newDisplayName: z.optional(z.string()),
-    })
+    }),
   )
 
   if (data.newUsername) {
