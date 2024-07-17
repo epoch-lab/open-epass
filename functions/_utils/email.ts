@@ -7,8 +7,7 @@ import {
   TENCENT_CLOUD_SES_TEMPLATE_ID,
 } from '#/_config'
 import { digestHex, hmacSha256Buffer, sha256 } from '#/_crypto'
-import dayjs from 'dayjs'
-import { formatDate } from './date'
+import { $dayjs, formatDate } from './date'
 
 export async function sendCodeEmail(
   dest: string,
@@ -24,7 +23,7 @@ export async function sendCodeEmail(
   const action = 'SendEmail'
   const version = '2020-10-02'
   const timestamp = parseInt(String(new Date().getTime() / 1000))
-  const date = dayjs(timestamp * 1000).format('YYYY-MM-DD')
+  const date = $dayjs(timestamp * 1000).format('YYYY-MM-DD')
   const payload = JSON.stringify({
     FromEmailAddress: TENCENT_CLOUD_SES_EMAIL_FROM,
     Destination: [dest],
