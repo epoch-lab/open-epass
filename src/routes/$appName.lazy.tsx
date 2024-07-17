@@ -1,7 +1,7 @@
 import { AppLogo } from '@/components/app-logo'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createLazyFileRoute, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/$appName')({
+export const Route = createLazyFileRoute('/$appName')({
   component: Page,
 })
 

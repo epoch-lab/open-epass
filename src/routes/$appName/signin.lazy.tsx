@@ -11,11 +11,11 @@ import { getValidTokenPayload, setToken } from '@/utils/token'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IconArrowRight, IconLock, IconUser } from '@tabler/icons-react'
 import { useMutation } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export const Route = createFileRoute('/$appName/signin')({
+export const Route = createLazyFileRoute('/$appName/signin')({
   component: Page,
 })
 

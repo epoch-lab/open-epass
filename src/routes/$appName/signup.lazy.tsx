@@ -17,12 +17,12 @@ import {
   IconUserStar,
 } from '@tabler/icons-react'
 import { useMutation } from '@tanstack/react-query'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-export const Route = createFileRoute('/$appName/signup')({
+export const Route = createLazyFileRoute('/$appName/signup')({
   component: Page,
 })
 

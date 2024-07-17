@@ -13,22 +13,22 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AppNameImport } from './routes/$appName'
-import { Route as AppNameSignupImport } from './routes/$appName/signup'
-import { Route as AppNameSigninImport } from './routes/$appName/signin'
-import { Route as AppNameRecoveryImport } from './routes/$appName/recovery'
 
 // Create Virtual Routes
 
+const AppNameLazyImport = createFileRoute('/$appName')()
 const IndexLazyImport = createFileRoute('/')()
 const ExampleIndexLazyImport = createFileRoute('/example/')()
+const AppNameSignupLazyImport = createFileRoute('/$appName/signup')()
+const AppNameSigninLazyImport = createFileRoute('/$appName/signin')()
+const AppNameRecoveryLazyImport = createFileRoute('/$appName/recovery')()
 
 // Create/Update Routes
 
-const AppNameRoute = AppNameImport.update({
+const AppNameLazyRoute = AppNameLazyImport.update({
   path: '/$appName',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/$appName.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -40,20 +40,26 @@ const ExampleIndexLazyRoute = ExampleIndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/example.index.lazy').then((d) => d.Route))
 
-const AppNameSignupRoute = AppNameSignupImport.update({
+const AppNameSignupLazyRoute = AppNameSignupLazyImport.update({
   path: '/signup',
-  getParentRoute: () => AppNameRoute,
-} as any)
+  getParentRoute: () => AppNameLazyRoute,
+} as any).lazy(() =>
+  import('./routes/$appName/signup.lazy').then((d) => d.Route),
+)
 
-const AppNameSigninRoute = AppNameSigninImport.update({
+const AppNameSigninLazyRoute = AppNameSigninLazyImport.update({
   path: '/signin',
-  getParentRoute: () => AppNameRoute,
-} as any)
+  getParentRoute: () => AppNameLazyRoute,
+} as any).lazy(() =>
+  import('./routes/$appName/signin.lazy').then((d) => d.Route),
+)
 
-const AppNameRecoveryRoute = AppNameRecoveryImport.update({
+const AppNameRecoveryLazyRoute = AppNameRecoveryLazyImport.update({
   path: '/recovery',
-  getParentRoute: () => AppNameRoute,
-} as any)
+  getParentRoute: () => AppNameLazyRoute,
+} as any).lazy(() =>
+  import('./routes/$appName/recovery.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -70,29 +76,29 @@ declare module '@tanstack/react-router' {
       id: '/$appName'
       path: '/$appName'
       fullPath: '/$appName'
-      preLoaderRoute: typeof AppNameImport
+      preLoaderRoute: typeof AppNameLazyImport
       parentRoute: typeof rootRoute
     }
     '/$appName/recovery': {
       id: '/$appName/recovery'
       path: '/recovery'
       fullPath: '/$appName/recovery'
-      preLoaderRoute: typeof AppNameRecoveryImport
-      parentRoute: typeof AppNameImport
+      preLoaderRoute: typeof AppNameRecoveryLazyImport
+      parentRoute: typeof AppNameLazyImport
     }
     '/$appName/signin': {
       id: '/$appName/signin'
       path: '/signin'
       fullPath: '/$appName/signin'
-      preLoaderRoute: typeof AppNameSigninImport
-      parentRoute: typeof AppNameImport
+      preLoaderRoute: typeof AppNameSigninLazyImport
+      parentRoute: typeof AppNameLazyImport
     }
     '/$appName/signup': {
       id: '/$appName/signup'
       path: '/signup'
       fullPath: '/$appName/signup'
-      preLoaderRoute: typeof AppNameSignupImport
-      parentRoute: typeof AppNameImport
+      preLoaderRoute: typeof AppNameSignupLazyImport
+      parentRoute: typeof AppNameLazyImport
     }
     '/example/': {
       id: '/example/'
@@ -108,10 +114,10 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  AppNameRoute: AppNameRoute.addChildren({
-    AppNameRecoveryRoute,
-    AppNameSigninRoute,
-    AppNameSignupRoute,
+  AppNameLazyRoute: AppNameLazyRoute.addChildren({
+    AppNameRecoveryLazyRoute,
+    AppNameSigninLazyRoute,
+    AppNameSignupLazyRoute,
   }),
   ExampleIndexLazyRoute,
 })
@@ -133,7 +139,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "index.lazy.tsx"
     },
     "/$appName": {
-      "filePath": "$appName.tsx",
+      "filePath": "$appName.lazy.tsx",
       "children": [
         "/$appName/recovery",
         "/$appName/signin",
@@ -141,15 +147,15 @@ export const routeTree = rootRoute.addChildren({
       ]
     },
     "/$appName/recovery": {
-      "filePath": "$appName/recovery.tsx",
+      "filePath": "$appName/recovery.lazy.tsx",
       "parent": "/$appName"
     },
     "/$appName/signin": {
-      "filePath": "$appName/signin.tsx",
+      "filePath": "$appName/signin.lazy.tsx",
       "parent": "/$appName"
     },
     "/$appName/signup": {
-      "filePath": "$appName/signup.tsx",
+      "filePath": "$appName/signup.lazy.tsx",
       "parent": "/$appName"
     },
     "/example/": {

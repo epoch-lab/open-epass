@@ -1,8 +1,8 @@
 import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/$appName/recovery')({
+export const Route = createLazyFileRoute('/$appName/recovery')({
   component: Page,
 })
 
