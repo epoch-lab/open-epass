@@ -131,3 +131,16 @@ export function sendSignupVerifyCodeEmail(
     exp,
   })
 }
+
+export function sendRecoveryVerifyCodeEmail(
+  dest: string,
+  code: string,
+  exp: number,
+) {
+  return sendCodeEmail(dest, {
+    opTitle: '重置密码验证',
+    opDesc: '重置回声通行证密码',
+    code,
+    exp,
+  })
+}
