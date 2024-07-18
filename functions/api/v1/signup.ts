@@ -23,7 +23,7 @@ export const signupSchema = z.object({
 export const onRequestPost: PagesFunction<Env> = async (c) => {
   const data = await $parseBody(c, signupSchema)
 
-  if (!(await checkCode(data.email, data.emailCode))) {
+  if (!(await checkCode(['signup-verify', data.email], data.emailCode))) {
     return $responseErr('Invalid email code')
   }
 

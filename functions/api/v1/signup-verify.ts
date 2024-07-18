@@ -18,7 +18,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     return $responseOk(null)
   }
 
-  const result = await genCode(data.email)
+  const result = await genCode(['signup-verify', data.email])
 
   await sendSignupVerifyCodeEmail(data.email, result.code, result.expiration)
 

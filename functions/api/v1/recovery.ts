@@ -14,7 +14,7 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     }),
   )
 
-  if (!(await checkCode(data.email, data.emailCode))) {
+  if (!(await checkCode(['recovery-verify', data.email], data.emailCode))) {
     return $responseErr('Invalid email code')
   }
 

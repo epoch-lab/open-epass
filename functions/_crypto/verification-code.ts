@@ -7,17 +7,17 @@ function getCurrentTimeWindow() {
 }
 
 export async function genCodeWithTimeWindow(
-  payload: string,
+  payload: string[],
   timeWindow: number,
 ) {
-  const msg = payload + timeWindow.toString()
+  const msg = payload.join('-') + timeWindow.toString()
   const fullCode = await hmacSha256String(msg, SERVER_SECRET)
 
   return fullCode.substring(0, 6)
 }
 
 export async function genCode(
-  payload: string,
+  payload: string[],
 ): Promise<{ code: string; expiration: number }> {
   const timeWindow = getCurrentTimeWindow()
 
@@ -31,7 +31,7 @@ export async function genCode(
   }
 }
 
-export async function checkCode(payload: string, code: string) {
+export async function checkCode(payload: string[], code: string) {
   const timeWindow = getCurrentTimeWindow()
 
   const codes = await Promise.all([
