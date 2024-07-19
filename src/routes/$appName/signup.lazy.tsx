@@ -6,6 +6,7 @@ import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
+import { CLOUDFLARE_TURNSTILE_SITE_KEY } from '@/configs'
 import { $fetch } from '@/utils/fetch'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -20,6 +21,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Turnstile from 'react-turnstile'
 import { z } from 'zod'
 
 export const Route = createLazyFileRoute('/$appName/signup')({
@@ -36,6 +38,9 @@ function Page() {
 
   const verifyForm = useForm<VerifyFields>({
     resolver: zodResolver(signupVerifySchema),
+    defaultValues: {
+      turnstile: '',
+    },
   })
   const signupForm = useForm<SignupFields>({
     resolver: zodResolver(signupSchema),
@@ -50,6 +55,11 @@ function Page() {
     onSuccess() {
       signupForm.setValue('email', verifyForm.getValues().email)
       setStage('signup')
+    },
+    onError(e) {
+      if (e.message === 'Invalid Turnstile token') {
+        verifyForm.setError('turnstile', { message: '验证无效，请重试' })
+      }
     },
   })
   const signupMutation = useMutation({
@@ -79,6 +89,10 @@ function Page() {
   function handleSignup(v: SignupFields) {
     signupMutation.mutate(v)
   }
+  function handleTurnstileVerify(token: string) {
+    verifyForm.setValue('turnstile', token)
+    verifyForm.clearErrors('turnstile')
+  }
 
   return (
     <>
@@ -101,6 +115,16 @@ function Page() {
             />
             <FormError error={verifyForm.formState.errors.email} />
 
+            <Turnstile
+              className="self-center bg-[#fafafa]"
+              sitekey={CLOUDFLARE_TURNSTILE_SITE_KEY}
+              refreshExpired="auto"
+              retry="never"
+              fixedSize
+              onVerify={handleTurnstileVerify}
+            />
+            <FormError error={verifyForm.formState.errors.turnstile} />
+
             <Button
               onClick={verifyForm.handleSubmit(handleEmailVerify)}
               disabled={verifyMutation.isPending}
@@ -108,16 +132,6 @@ function Page() {
             >
               {verifyMutation.isPending ? <Spinner /> : '发送验证码'}
             </Button>
-            <button
-              className="mt-2 self-center text-sm opacity-50 transition hover:opacity-100"
-              onClick={verifyForm.handleSubmit(() => {
-                signupForm.setValue('email', verifyForm.getValues().email)
-                setStage('signup')
-              })}
-              disabled={verifyMutation.isPending}
-            >
-              已有验证码
-            </button>
           </>
         )}
 

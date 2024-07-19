@@ -15,3 +15,6 @@ export const TENCENT_CLOUD_SES_EMAIL_FROM =
   '回声通行证 ePass <noreply@pass.cuit.dev>'
 export const TENCENT_CLOUD_SES_SUBJECT_SUFFIX = ' | 回声通行证'
 export const TENCENT_CLOUD_SES_TEMPLATE_ID = 125201
+
+export const CLOUDFLARE_TURNSTILE_SECRET_KEY =
+  '***REMOVED***'

@@ -14,3 +14,14 @@ export async function $parseBody<T>(
 
   throw fromError(result.error)
 }
+
+export function $parseIp(
+  context: EventContext<Env, any, Record<string, unknown>>,
+) {
+  const ip = context.request.headers.get('CF-Connecting-IP')
+  if (!ip) {
+    console.error('Failed to parse IP: invalid headers')
+    return undefined
+  }
+  return ip
+}
