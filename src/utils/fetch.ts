@@ -1,3 +1,5 @@
+import { getUserTokenInfo } from '@/atoms/token'
+
 export async function $fetch<T>(input: RequestInfo | URL, init?: RequestInit) {
   const resp = await fetch(input, init)
 
@@ -12,4 +14,13 @@ export async function $fetch<T>(input: RequestInfo | URL, init?: RequestInit) {
   }
 
   return data.payload as T
+}
+
+export function $userAuthHeader() {
+  const info = getUserTokenInfo()
+  if (!info.loggedIn) {
+    throw new Error('Not logged in')
+  }
+
+  return { Authorization: 'Bearer ' + info.token } as HeadersInit
 }

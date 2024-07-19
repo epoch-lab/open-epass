@@ -148,10 +148,21 @@ export async function updateUserNameById(
     newUsername: string
   },
 ) {
-  const result = await db
-    .prepare('UPDATE users SET username = ? WHERE user_id = ?')
-    .bind(args.newUsername, args.userId)
-    .run()
+  let result: D1Response
+  try {
+    result = await db
+      .prepare('UPDATE users SET username = ? WHERE user_id = ?')
+      .bind(args.newUsername, args.userId)
+      .run()
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes('UNIQUE constraint failed: users.username')
+    ) {
+      throw new Error('Duplicated username')
+    }
+    throw error
+  }
 
   if (!result.success) {
     throw new Error('Failed to update username')

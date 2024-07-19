@@ -12,7 +12,7 @@ export async function signUserJwt(userId: number, expiration: string) {
   return jwt
 }
 
-export async function $parseUserJwt(
+async function parseJwtPayload(
   context: EventContext<Env, any, Record<string, unknown>>,
 ) {
   const authHeader = context.request.headers.get('authorization')
@@ -29,10 +29,27 @@ export async function $parseUserJwt(
     throw new Error('Invalid token')
   }
 
-  const { userId } = result.payload
+  return result.payload
+}
+
+export async function $parseUserJwt(
+  context: EventContext<Env, any, Record<string, unknown>>,
+) {
+  const { userId } = await parseJwtPayload(context)
   if (typeof userId !== 'number') {
     throw new Error('Invalid token')
   }
 
   return userId
+}
+
+export async function $parseAdminJwt(
+  context: EventContext<Env, any, Record<string, unknown>>,
+) {
+  const { adminName } = await parseJwtPayload(context)
+  if (typeof adminName !== 'string') {
+    throw new Error('Invalid token')
+  }
+
+  return adminName
 }

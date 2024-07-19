@@ -1,5 +1,6 @@
 import { signinEmailSchema } from '#/api/v1/signin-email'
 import { signinUsernameSchema } from '#/api/v1/signin-username'
+import { setUserToken } from '@/atoms/token'
 import { Button } from '@/components/button'
 import { Checkbox } from '@/components/checkbox'
 import { FormError } from '@/components/form-error'
@@ -7,8 +8,8 @@ import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
+import { useConnectAppMutation } from '@/hooks/use-connect-app-mutation'
 import { $fetch } from '@/utils/fetch'
-import { getValidTokenPayload, setToken } from '@/utils/token'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IconArrowRight, IconLock, IconUser } from '@tabler/icons-react'
 import { useMutation } from '@tanstack/react-query'
@@ -30,6 +31,8 @@ type Fields = z.infer<typeof schema>
 
 function Page() {
   const { appName } = Route.useParams()
+
+  const { isRedirecting, ...connectMutation } = useConnectAppMutation()
 
   const form = useForm<Fields>({
     defaultValues: {
@@ -82,11 +85,14 @@ function Page() {
   })
 
   const isLoading =
-    signinEmailMutatuion.isPending || signinUsernameMutatuion.isPending
+    signinEmailMutatuion.isPending ||
+    signinUsernameMutatuion.isPending ||
+    connectMutation.isPending ||
+    isRedirecting
 
   function handleSigninSuccess(token: string) {
-    setToken(token)
-    alert('登陆成功，你的 ID 是：' + getValidTokenPayload().userId)
+    setUserToken(token)
+    connectMutation.mutate({ appName })
   }
 
   function handleSigninError() {
