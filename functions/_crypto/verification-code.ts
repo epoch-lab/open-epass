@@ -1,4 +1,4 @@
-import { CODE_TIME_WINDOW_SIZE, SERVER_SECRET } from '#/_config'
+import { CODE_TIME_WINDOW_SIZE, SERVER_SECRET } from '#/_configs'
 import { hmacSha256String } from '.'
 
 function getCurrentTimeWindow() {

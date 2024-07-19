@@ -1,4 +1,4 @@
-import { JWT_EXP_LONG, JWT_EXP_NORMAL } from '#/_config'
+import { JWT_EXP_LONG, JWT_EXP_NORMAL } from '#/_configs'
 import { loginUserByName } from '#/_db/users'
 import { signUserJwt } from '#/_utils/jwt'
 import { $parseBody, $parseIp } from '#/_utils/request'

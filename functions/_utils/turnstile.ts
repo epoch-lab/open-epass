@@ -1,4 +1,4 @@
-import { CLOUDFLARE_TURNSTILE_SECRET_KEY } from '#/_config'
+import { CLOUDFLARE_TURNSTILE_SECRET_KEY } from '#/_configs'
 
 export async function $verfiyTurnstile(token: string, remoteIp?: string) {
   const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'

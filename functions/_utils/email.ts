@@ -5,7 +5,7 @@ import {
   TENCENT_CLOUD_SES_REGION,
   TENCENT_CLOUD_SES_SUBJECT_SUFFIX,
   TENCENT_CLOUD_SES_TEMPLATE_ID,
-} from '#/_config'
+} from '#/_configs'
 import { digestHex, hmacSha256Buffer, sha256 } from '#/_crypto'
 import { $dayjs, formatDate } from './date'
 

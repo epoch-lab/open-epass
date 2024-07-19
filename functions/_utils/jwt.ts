@@ -1,4 +1,4 @@
-import { SERVER_SECRET } from '#/_config'
+import { SERVER_SECRET } from '#/_configs'
 import * as jose from 'jose'
 
 const secret = new TextEncoder().encode(SERVER_SECRET)
