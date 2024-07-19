@@ -1,16 +1,13 @@
-import { getUserTokenInfo, setUserToken } from '@/atoms/token'
+import { getUserTokenInfo } from '@/atoms/token'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { HeroTitle } from '@/components/hero-title'
+import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { useConnectAppMutation } from '@/hooks/use-connect-app-mutation'
 import { useUserProfile } from '@/hooks/use-user-info'
 import { IconArrowRight } from '@tabler/icons-react'
-import {
-  createLazyFileRoute,
-  Navigate,
-  useNavigate,
-} from '@tanstack/react-router'
+import { createLazyFileRoute, Navigate } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/$appName/continue')({
   component: Page,
@@ -19,15 +16,8 @@ export const Route = createLazyFileRoute('/$appName/continue')({
 function Page() {
   const { appName } = Route.useParams()
 
-  const navigate = useNavigate()
-
   const { data, isSuccess } = useUserProfile()
   const { isRedirecting, ...mutation } = useConnectAppMutation()
-
-  function handleChangeAccount() {
-    setUserToken('')
-    navigate({ to: '/$appName/signin', params: { appName }, replace: true })
-  }
 
   function handleConnectApp() {
     mutation.mutate({ appName })
@@ -43,12 +33,9 @@ function Page() {
 
       <div className="px-12 text-sm leading-loose">
         <span className="opacity-50">这不是您？</span>
-        <button
-          className="mt-2 self-center text-sm opacity-50 transition hover:opacity-100"
-          onClick={handleChangeAccount}
-        >
+        <Link to="/$appName/signin" params={{ appName }}>
           切换账号
-        </button>
+        </Link>
       </div>
 
       {isSuccess && (
