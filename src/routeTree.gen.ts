@@ -19,7 +19,7 @@ import { Route as AppNameIndexImport } from './routes/$appName.index'
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
-const ExampleIndexLazyImport = createFileRoute('/example/')()
+const ExampleAppIndexLazyImport = createFileRoute('/example-app/')()
 const AppNameSignupLazyImport = createFileRoute('/$appName/signup')()
 const AppNameSigninLazyImport = createFileRoute('/$appName/signin')()
 const AppNameRecoveryLazyImport = createFileRoute('/$appName/recovery')()
@@ -37,10 +37,12 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const ExampleIndexLazyRoute = ExampleIndexLazyImport.update({
-  path: '/example/',
+const ExampleAppIndexLazyRoute = ExampleAppIndexLazyImport.update({
+  path: '/example-app/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/example.index.lazy').then((d) => d.Route))
+} as any).lazy(() =>
+  import('./routes/example-app.index.lazy').then((d) => d.Route),
+)
 
 const AppNameIndexRoute = AppNameIndexImport.update({
   path: '/',
@@ -128,11 +130,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNameIndexImport
       parentRoute: typeof AppNameImport
     }
-    '/example/': {
-      id: '/example/'
-      path: '/example'
-      fullPath: '/example'
-      preLoaderRoute: typeof ExampleIndexLazyImport
+    '/example-app/': {
+      id: '/example-app/'
+      path: '/example-app'
+      fullPath: '/example-app'
+      preLoaderRoute: typeof ExampleAppIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -149,7 +151,7 @@ export const routeTree = rootRoute.addChildren({
     AppNameSignupLazyRoute,
     AppNameIndexRoute,
   }),
-  ExampleIndexLazyRoute,
+  ExampleAppIndexLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -162,7 +164,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/$appName",
-        "/example/"
+        "/example-app/"
       ]
     },
     "/": {
@@ -198,8 +200,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "$appName.index.tsx",
       "parent": "/$appName"
     },
-    "/example/": {
-      "filePath": "example.index.lazy.tsx"
+    "/example-app/": {
+      "filePath": "example-app.index.lazy.tsx"
     }
   }
 }

@@ -20,7 +20,11 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
     return $responseOk(null)
   }
 
-  const result = await genCode(userId + data.newEmail)
+  const result = await genCode([
+    'update-email-verify',
+    userId.toString(),
+    data.newEmail,
+  ])
 
   console.log(result)
 

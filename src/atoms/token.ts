@@ -20,8 +20,6 @@ const adminTokenAtom = atomWithStorage('admin-token', '')
 const userTokenInfoAtom = atom<UserTokenInfo>((get) => {
   const token = get(userTokenAtom)
 
-  console.log(token)
-
   if (token === '') {
     return { loggedIn: false }
   }
