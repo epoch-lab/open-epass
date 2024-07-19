@@ -9,7 +9,7 @@ export const signupSchema = z.object({
   emailCode: z.string().min(1, '邮箱验证码不能为空'),
   username: z
     .string()
-    .regex(/^[a-zA-Z0-9_-]*$/, '用户名只能包含字母、数字、-、_')
+    .regex(/^[a-z0-9_-]*$/, '用户名只能包含小写字母、数字、-、_')
     .min(3, '用户名至少 3 个字符')
     .max(16, '用户名最长 16 个字符'),
   displayName: z.string().min(1, '展示名称不能为空'),
