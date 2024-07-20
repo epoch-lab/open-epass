@@ -84,3 +84,48 @@ def decrypt_sauce(app_secret, sauce):
 
     return plaintext
 ```
+
+### Java 示例
+
+```java
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+public class EpassSauceDecryption {
+    private static final int GCM_TAG_LENGTH = 16;
+    private static final int GCM_IV_LENGTH = 12;
+
+    public static String decrypt(String appSecret, String sauce) throws Exception {
+        // Base64URL 解码
+        byte[] sauceBytes = Base64.getUrlDecoder().decode(sauce);
+
+        // 前 12 字节为IV
+        byte[] iv = new byte[GCM_IV_LENGTH];
+        System.arraycopy(sauceBytes, 0, iv, 0, GCM_IV_LENGTH);
+
+        // 剩余部分为密文（包含认证标签）
+        int ciphertextLength = sauceBytes.length - GCM_IV_LENGTH;
+        byte[] ciphertextWithTag = new byte[ciphertextLength];
+        System.arraycopy(sauceBytes, GCM_IV_LENGTH, ciphertextWithTag, 0, ciphertextLength);
+
+        // 创建 AES 密钥
+        SecretKeySpec keySpec = new SecretKeySpec(appSecret.getBytes(StandardCharsets.UTF_8), "AES");
+
+        // 设置 GCM 参数
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, iv);
+
+        // 初始化解密 Cipher
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec);
+
+        // 解密（密文和认证标签都在 ciphertextWithTag 中）
+        byte[] decryptedText = cipher.doFinal(ciphertextWithTag);
+
+        // 返回解密后的字符串
+        return new String(decryptedText, StandardCharsets.UTF_8);
+    }
+}
+```
