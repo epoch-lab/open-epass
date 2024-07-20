@@ -9,7 +9,7 @@ import { useUserProfile } from '@/hooks/use-user-info'
 import { IconArrowRight } from '@tabler/icons-react'
 import { createLazyFileRoute, Navigate } from '@tanstack/react-router'
 
-export const Route = createLazyFileRoute('/$appName/continue')({
+export const Route = createLazyFileRoute('/connect/$appName/continue')({
   component: Page,
 })
 
@@ -24,7 +24,7 @@ function Page() {
   }
 
   if (!getUserTokenInfo().loggedIn) {
-    return <Navigate to="/$appName/signin" params={{ appName }} replace />
+    return <Navigate to="/connect/$appName/signin" params={{ appName }} replace />
   }
 
   return (
@@ -33,7 +33,7 @@ function Page() {
 
       <div className="px-12 text-sm leading-loose">
         <span className="opacity-50">这不是您？</span>
-        <Link to="/$appName/signin" params={{ appName }}>
+        <Link to="/connect/$appName/signin" params={{ appName }}>
           切换账号
         </Link>
       </div>

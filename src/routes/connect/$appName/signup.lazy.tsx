@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form'
 import Turnstile from 'react-turnstile'
 import { z } from 'zod'
 
-export const Route = createLazyFileRoute('/$appName/signup')({
+export const Route = createLazyFileRoute('/connect/$appName/signup')({
   component: Page,
 })
 
@@ -100,7 +100,7 @@ function Page() {
 
       <div className="px-12 text-sm leading-loose">
         <span className="opacity-50">已有回声通行证？</span>
-        <Link to="/$appName/signin" params={{ appName }}>
+        <Link to="/connect/$appName/signin" params={{ appName }}>
           前往登录
         </Link>
       </div>
@@ -206,7 +206,10 @@ function Page() {
 
             <Button
               onClick={() =>
-                navigate({ to: '/$appName/signin', params: { appName } })
+                navigate({
+                  to: '/connect/$appName/signin',
+                  params: { appName },
+                })
               }
               className="mt-8"
             >

@@ -13,24 +13,27 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AppNameImport } from './routes/$appName'
-import { Route as AppNameIndexImport } from './routes/$appName.index'
+import { Route as ConnectAppNameImport } from './routes/connect/$appName'
 
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
 const ExampleAppIndexLazyImport = createFileRoute('/example-app/')()
-const AppNameSignupLazyImport = createFileRoute('/$appName/signup')()
-const AppNameSigninLazyImport = createFileRoute('/$appName/signin')()
-const AppNameRecoveryLazyImport = createFileRoute('/$appName/recovery')()
-const AppNameContinueLazyImport = createFileRoute('/$appName/continue')()
+const ConnectAppNameIndexLazyImport = createFileRoute('/connect/$appName/')()
+const ConnectAppNameSignupLazyImport = createFileRoute(
+  '/connect/$appName/signup',
+)()
+const ConnectAppNameSigninLazyImport = createFileRoute(
+  '/connect/$appName/signin',
+)()
+const ConnectAppNameRecoveryLazyImport = createFileRoute(
+  '/connect/$appName/recovery',
+)()
+const ConnectAppNameContinueLazyImport = createFileRoute(
+  '/connect/$appName/continue',
+)()
 
 // Create/Update Routes
-
-const AppNameRoute = AppNameImport.update({
-  path: '/$appName',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -44,37 +47,48 @@ const ExampleAppIndexLazyRoute = ExampleAppIndexLazyImport.update({
   import('./routes/example-app.index.lazy').then((d) => d.Route),
 )
 
-const AppNameIndexRoute = AppNameIndexImport.update({
-  path: '/',
-  getParentRoute: () => AppNameRoute,
+const ConnectAppNameRoute = ConnectAppNameImport.update({
+  path: '/connect/$appName',
+  getParentRoute: () => rootRoute,
 } as any)
 
-const AppNameSignupLazyRoute = AppNameSignupLazyImport.update({
+const ConnectAppNameIndexLazyRoute = ConnectAppNameIndexLazyImport.update({
+  path: '/',
+  getParentRoute: () => ConnectAppNameRoute,
+} as any).lazy(() =>
+  import('./routes/connect/$appName/index.lazy').then((d) => d.Route),
+)
+
+const ConnectAppNameSignupLazyRoute = ConnectAppNameSignupLazyImport.update({
   path: '/signup',
-  getParentRoute: () => AppNameRoute,
+  getParentRoute: () => ConnectAppNameRoute,
 } as any).lazy(() =>
-  import('./routes/$appName/signup.lazy').then((d) => d.Route),
+  import('./routes/connect/$appName/signup.lazy').then((d) => d.Route),
 )
 
-const AppNameSigninLazyRoute = AppNameSigninLazyImport.update({
+const ConnectAppNameSigninLazyRoute = ConnectAppNameSigninLazyImport.update({
   path: '/signin',
-  getParentRoute: () => AppNameRoute,
+  getParentRoute: () => ConnectAppNameRoute,
 } as any).lazy(() =>
-  import('./routes/$appName/signin.lazy').then((d) => d.Route),
+  import('./routes/connect/$appName/signin.lazy').then((d) => d.Route),
 )
 
-const AppNameRecoveryLazyRoute = AppNameRecoveryLazyImport.update({
-  path: '/recovery',
-  getParentRoute: () => AppNameRoute,
-} as any).lazy(() =>
-  import('./routes/$appName/recovery.lazy').then((d) => d.Route),
+const ConnectAppNameRecoveryLazyRoute = ConnectAppNameRecoveryLazyImport.update(
+  {
+    path: '/recovery',
+    getParentRoute: () => ConnectAppNameRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/connect/$appName/recovery.lazy').then((d) => d.Route),
 )
 
-const AppNameContinueLazyRoute = AppNameContinueLazyImport.update({
-  path: '/continue',
-  getParentRoute: () => AppNameRoute,
-} as any).lazy(() =>
-  import('./routes/$appName/continue.lazy').then((d) => d.Route),
+const ConnectAppNameContinueLazyRoute = ConnectAppNameContinueLazyImport.update(
+  {
+    path: '/continue',
+    getParentRoute: () => ConnectAppNameRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/connect/$appName/continue.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -88,47 +102,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/$appName': {
-      id: '/$appName'
-      path: '/$appName'
-      fullPath: '/$appName'
-      preLoaderRoute: typeof AppNameImport
+    '/connect/$appName': {
+      id: '/connect/$appName'
+      path: '/connect/$appName'
+      fullPath: '/connect/$appName'
+      preLoaderRoute: typeof ConnectAppNameImport
       parentRoute: typeof rootRoute
-    }
-    '/$appName/continue': {
-      id: '/$appName/continue'
-      path: '/continue'
-      fullPath: '/$appName/continue'
-      preLoaderRoute: typeof AppNameContinueLazyImport
-      parentRoute: typeof AppNameImport
-    }
-    '/$appName/recovery': {
-      id: '/$appName/recovery'
-      path: '/recovery'
-      fullPath: '/$appName/recovery'
-      preLoaderRoute: typeof AppNameRecoveryLazyImport
-      parentRoute: typeof AppNameImport
-    }
-    '/$appName/signin': {
-      id: '/$appName/signin'
-      path: '/signin'
-      fullPath: '/$appName/signin'
-      preLoaderRoute: typeof AppNameSigninLazyImport
-      parentRoute: typeof AppNameImport
-    }
-    '/$appName/signup': {
-      id: '/$appName/signup'
-      path: '/signup'
-      fullPath: '/$appName/signup'
-      preLoaderRoute: typeof AppNameSignupLazyImport
-      parentRoute: typeof AppNameImport
-    }
-    '/$appName/': {
-      id: '/$appName/'
-      path: '/'
-      fullPath: '/$appName/'
-      preLoaderRoute: typeof AppNameIndexImport
-      parentRoute: typeof AppNameImport
     }
     '/example-app/': {
       id: '/example-app/'
@@ -137,6 +116,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleAppIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/connect/$appName/continue': {
+      id: '/connect/$appName/continue'
+      path: '/continue'
+      fullPath: '/connect/$appName/continue'
+      preLoaderRoute: typeof ConnectAppNameContinueLazyImport
+      parentRoute: typeof ConnectAppNameImport
+    }
+    '/connect/$appName/recovery': {
+      id: '/connect/$appName/recovery'
+      path: '/recovery'
+      fullPath: '/connect/$appName/recovery'
+      preLoaderRoute: typeof ConnectAppNameRecoveryLazyImport
+      parentRoute: typeof ConnectAppNameImport
+    }
+    '/connect/$appName/signin': {
+      id: '/connect/$appName/signin'
+      path: '/signin'
+      fullPath: '/connect/$appName/signin'
+      preLoaderRoute: typeof ConnectAppNameSigninLazyImport
+      parentRoute: typeof ConnectAppNameImport
+    }
+    '/connect/$appName/signup': {
+      id: '/connect/$appName/signup'
+      path: '/signup'
+      fullPath: '/connect/$appName/signup'
+      preLoaderRoute: typeof ConnectAppNameSignupLazyImport
+      parentRoute: typeof ConnectAppNameImport
+    }
+    '/connect/$appName/': {
+      id: '/connect/$appName/'
+      path: '/'
+      fullPath: '/connect/$appName/'
+      preLoaderRoute: typeof ConnectAppNameIndexLazyImport
+      parentRoute: typeof ConnectAppNameImport
+    }
   }
 }
 
@@ -144,12 +158,12 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  AppNameRoute: AppNameRoute.addChildren({
-    AppNameContinueLazyRoute,
-    AppNameRecoveryLazyRoute,
-    AppNameSigninLazyRoute,
-    AppNameSignupLazyRoute,
-    AppNameIndexRoute,
+  ConnectAppNameRoute: ConnectAppNameRoute.addChildren({
+    ConnectAppNameContinueLazyRoute,
+    ConnectAppNameRecoveryLazyRoute,
+    ConnectAppNameSigninLazyRoute,
+    ConnectAppNameSignupLazyRoute,
+    ConnectAppNameIndexLazyRoute,
   }),
   ExampleAppIndexLazyRoute,
 })
@@ -163,45 +177,45 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/$appName",
+        "/connect/$appName",
         "/example-app/"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/$appName": {
-      "filePath": "$appName.tsx",
+    "/connect/$appName": {
+      "filePath": "connect/$appName.tsx",
       "children": [
-        "/$appName/continue",
-        "/$appName/recovery",
-        "/$appName/signin",
-        "/$appName/signup",
-        "/$appName/"
+        "/connect/$appName/continue",
+        "/connect/$appName/recovery",
+        "/connect/$appName/signin",
+        "/connect/$appName/signup",
+        "/connect/$appName/"
       ]
-    },
-    "/$appName/continue": {
-      "filePath": "$appName/continue.lazy.tsx",
-      "parent": "/$appName"
-    },
-    "/$appName/recovery": {
-      "filePath": "$appName/recovery.lazy.tsx",
-      "parent": "/$appName"
-    },
-    "/$appName/signin": {
-      "filePath": "$appName/signin.lazy.tsx",
-      "parent": "/$appName"
-    },
-    "/$appName/signup": {
-      "filePath": "$appName/signup.lazy.tsx",
-      "parent": "/$appName"
-    },
-    "/$appName/": {
-      "filePath": "$appName.index.tsx",
-      "parent": "/$appName"
     },
     "/example-app/": {
       "filePath": "example-app.index.lazy.tsx"
+    },
+    "/connect/$appName/continue": {
+      "filePath": "connect/$appName/continue.lazy.tsx",
+      "parent": "/connect/$appName"
+    },
+    "/connect/$appName/recovery": {
+      "filePath": "connect/$appName/recovery.lazy.tsx",
+      "parent": "/connect/$appName"
+    },
+    "/connect/$appName/signin": {
+      "filePath": "connect/$appName/signin.lazy.tsx",
+      "parent": "/connect/$appName"
+    },
+    "/connect/$appName/signup": {
+      "filePath": "connect/$appName/signup.lazy.tsx",
+      "parent": "/connect/$appName"
+    },
+    "/connect/$appName/": {
+      "filePath": "connect/$appName/index.lazy.tsx",
+      "parent": "/connect/$appName"
     }
   }
 }

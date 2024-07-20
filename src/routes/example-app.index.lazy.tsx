@@ -67,9 +67,9 @@ function Page() {
     <div className="max-w-screen-sm p-4 text-justify [&_p]:my-2">
       <p>
         点击下面的链接进行登录，此示例 App 的 appName 为 example，因此跳转到
-        /example
+        /connect/example
       </p>
-      <a href="/example/" className="text-blue-500 underline">
+      <a href="/connect/example/" className="text-blue-500 underline">
         登录
       </a>
       <p>登录成功后会携带 sauce 重定向到这个页面</p>

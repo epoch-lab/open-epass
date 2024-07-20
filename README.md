@@ -42,7 +42,7 @@
 
    **`Attributes`** 可选 App 属性，JSON 字符串，目前可用属性有 `displayName`（ePass 中的显示名称）、`logoUrl`（ePass 中的 Logo 图片地址）
 
-2. 业务前端把用户重定向到 `https://<ePass 域名>/<App Name>`，用户登陆后，携带加密用户基本信息 `sauce` 返回业务前端
+2. 业务前端把用户重定向到 `https://<ePass 域名>/connect/<App Name>`，用户登陆后，携带加密用户基本信息 `sauce` 返回业务前端
 3. 业务前端在 `Redirect URL` 接收 `sauce`，传递 `sauce` 到业务后端，接收 JWT
 4. 业务后端接到 `sauce`，按照下述解密说明解密出用户基本信息，示例如下：
    ```jsonc

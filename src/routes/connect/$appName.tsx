@@ -4,7 +4,7 @@ import { $fetch } from '@/utils/fetch'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/$appName')({
+export const Route = createFileRoute('/connect/$appName')({
   component: Page,
 })
 
@@ -40,7 +40,7 @@ function Page() {
                 <p className="tracking text-sm opacity-50">
                   使用回声通行证连接
                 </p>
-                <p className="text-3xl">
+                <p className="text-xl">
                   {data.attributes.displayName ?? data.appName}
                 </p>
               </div>
