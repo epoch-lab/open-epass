@@ -10,6 +10,7 @@ export const Route = createFileRoute('/connect/$appName')({
 
 function Page() {
   const { appName } = Route.useParams()
+  const isUserSettingsApp = appName === 'i'
 
   const { isSuccess, data } = useQuery({
     queryKey: ['app-profile', appName],
@@ -22,6 +23,7 @@ function Page() {
       }),
     refetchOnWindowFocus: false,
     staleTime: 24 * 60 * 60 * 1000,
+    enabled: isUserSettingsApp,
   })
 
   return (
@@ -34,26 +36,23 @@ function Page() {
         <Outlet />
 
         <div className="mt-auto flex h-[88px] items-center border-t px-4">
-          {isSuccess && (
-            <>
-              <div className="flex-grow">
-                <p className="tracking text-sm opacity-50">
-                  使用回声通行证连接
-                </p>
-                <p className="text-xl">
-                  {data.attributes.displayName ?? data.appName}
-                </p>
+          <>
+            <div className="flex-grow">
+              <p className="tracking text-sm opacity-50">使用回声通行证连接</p>
+              <p className="text-xl">
+                {isSuccess && (data.attributes.displayName ?? data.appName)}
+                {isUserSettingsApp && '我的通行证'}
+              </p>
+            </div>
+            {isSuccess && data.attributes.logoUrl && (
+              <div className="h-12 w-12 overflow-hidden rounded-lg bg-gray-200 text-sm">
+                <img
+                  src={data.attributes.logoUrl}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              {data.attributes.logoUrl && (
-                <div className="h-12 w-12 overflow-hidden rounded-lg bg-gray-200 text-sm">
-                  <img
-                    src={data.attributes.logoUrl}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              )}
-            </>
-          )}
+            )}
+          </>
         </div>
       </div>
       <div className="mb-4 mt-8 text-sm opacity-25">© Epoch Lab</div>

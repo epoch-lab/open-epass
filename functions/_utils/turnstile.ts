@@ -1,12 +1,20 @@
 import { CLOUDFLARE_TURNSTILE_SECRET_KEY } from '#/_configs'
 
-export async function $verfiyTurnstile(token: string, remoteIp?: string) {
+export async function $verfiyTurnstile(
+  token: string,
+  context: EventContext<Env, any, Record<string, unknown>>,
+) {
+  if (context.env.IS_DEV) {
+    return
+  }
+
+  const ip = context.request.headers.get('CF-Connecting-IP')
   const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
   const resp = await fetch(url, {
     body: JSON.stringify({
       secret: CLOUDFLARE_TURNSTILE_SECRET_KEY,
       response: token,
-      remoteip: remoteIp,
+      remoteip: ip,
     }),
     method: 'POST',
     headers: {

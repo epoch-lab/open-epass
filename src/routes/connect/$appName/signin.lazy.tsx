@@ -14,7 +14,7 @@ import { $fetch } from '@/utils/fetch'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IconArrowRight, IconLock, IconUser } from '@tabler/icons-react'
 import { useMutation } from '@tanstack/react-query'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Controller, useForm } from 'react-hook-form'
 import Turnstile, { useTurnstile } from 'react-turnstile'
 import { z } from 'zod'
@@ -34,7 +34,9 @@ type Fields = z.infer<typeof schema>
 
 function Page() {
   const { appName } = Route.useParams()
+  const isUserSettingsApp = appName === 'i'
 
+  const navigate = useNavigate()
   const turnstile = useTurnstile()
 
   const { isRedirecting, ...connectMutation } = useConnectAppMutation()
@@ -96,7 +98,11 @@ function Page() {
 
   function handleSigninSuccess(token: string) {
     setUserToken(token)
-    connectMutation.mutate({ appName })
+    if (isUserSettingsApp) {
+      navigate({ to: '/i/profile' })
+    } else {
+      connectMutation.mutate({ appName })
+    }
   }
 
   function handleSigninError(error: Error) {

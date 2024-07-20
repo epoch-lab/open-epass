@@ -1,7 +1,7 @@
 import { genCode } from '#/_crypto/verification-code'
 import { getUserByEmail } from '#/_db/users'
 import { sendSignupVerifyCodeEmail } from '#/_utils/email'
-import { $parseBody, $parseIp } from '#/_utils/request'
+import { $parseBody } from '#/_utils/request'
 import { $responseOk } from '#/_utils/response'
 import { $verfiyTurnstile } from '#/_utils/turnstile'
 import { z } from 'zod'
@@ -14,7 +14,7 @@ export const signupVerifySchema = z.object({
 export const onRequestPost: PagesFunction<Env> = async (c) => {
   const data = await $parseBody(c, signupVerifySchema)
 
-  await $verfiyTurnstile(data.turnstile, $parseIp(c))
+  await $verfiyTurnstile(data.turnstile, c)
 
   if ((await getUserByEmail(c.env.DB, { email: data.email })) !== null) {
     // 邮箱已经存在，这里假装 OK，防止邮箱嗅探

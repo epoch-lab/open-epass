@@ -7,7 +7,11 @@ import { Spinner } from '@/components/spinner'
 import { useConnectAppMutation } from '@/hooks/use-connect-app-mutation'
 import { useUserProfile } from '@/hooks/use-user-info'
 import { IconArrowRight } from '@tabler/icons-react'
-import { createLazyFileRoute, Navigate } from '@tanstack/react-router'
+import {
+  createLazyFileRoute,
+  Navigate,
+  useNavigate,
+} from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/connect/$appName/continue')({
   component: Page,
@@ -15,16 +19,24 @@ export const Route = createLazyFileRoute('/connect/$appName/continue')({
 
 function Page() {
   const { appName } = Route.useParams()
+  const isUserSettingsApp = appName === 'i'
 
+  const navigate = useNavigate()
   const { data, isSuccess } = useUserProfile()
   const { isRedirecting, ...mutation } = useConnectAppMutation()
 
   function handleConnectApp() {
-    mutation.mutate({ appName })
+    if (isUserSettingsApp) {
+      navigate({ to: '/i/profile' })
+    } else {
+      mutation.mutate({ appName })
+    }
   }
 
   if (!getUserTokenInfo().loggedIn) {
-    return <Navigate to="/connect/$appName/signin" params={{ appName }} replace />
+    return (
+      <Navigate to="/connect/$appName/signin" params={{ appName }} replace />
+    )
   }
 
   return (
