@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 export function useUserProfile() {
   const tokenInfo = useUserTokenInfo()
   const query = useQuery({
-    queryKey: ['user-profile'],
+    queryKey: ['user-profile', tokenInfo.loggedIn && tokenInfo.userId],
     queryFn: () =>
       $fetch<{
         userId: number
@@ -17,7 +17,7 @@ export function useUserProfile() {
       }),
     enabled: tokenInfo.loggedIn,
     refetchOnWindowFocus: false,
-    staleTime: 24 * 60 * 60 * 1000,
+    staleTime: 1 * 60 * 60 * 1000,
   })
 
   return query

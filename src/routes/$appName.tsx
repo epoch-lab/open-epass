@@ -12,7 +12,7 @@ function Page() {
   const { appName } = Route.useParams()
 
   const { isSuccess, data } = useQuery({
-    queryKey: ['app-profile'],
+    queryKey: ['app-profile', appName],
     queryFn: () =>
       $fetch<GetAppProfileResponse>('/api/v1/get-app-profile', {
         method: 'post',
