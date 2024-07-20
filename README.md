@@ -48,9 +48,9 @@
    ```jsonc
    {
      "userId": 10001, // 用户 ID
-     "username": "ptr", // 用户名
-     "displayName": "bakaptr", // 用户展示名
-     "email": "i@zhousiru.com", // 用户邮箱
+     "username": "example-user", // 用户名
+     "displayName": "示例用户", // 用户展示名
+     "email": "i@example.com", // 用户邮箱
      "issueDate": 1721441086, // `sauce` 签发时间戳
    }
    ```
@@ -66,3 +66,21 @@
 首先需要对 `sauce` 进行 Base64URL 解码，Base64URL 指的是 `+/` 被替换为 `-_` 的 Base64 变体，如果使用的 Base64 解码库不支持 Base64URL 解码，可以手动把 `-_` 替换为 `+/`，再进行 Base64 解码。
 
 解码后的二进制数据前 12 字节为 `IV`，其余部分为密文 `Ciphertext`，使用 `App Secret`、`IV` 对 `Ciphertext` 使用 AES-256-GCM 解密为 UTF-8 字符串，即为用户基本信息 JSON。
+
+### Python 示例
+
+```python
+import base64
+from Crypto.Cipher import AES
+
+def decrypt_sauce(app_secret, sauce):
+    sauceBytes = base64.urlsafe_b64decode(sauce)
+    iv = sauceBytes[:12]
+    ciphertext = sauceBytes[12:]
+    cipher = AES.new(app_secret.encode('utf-8'), AES.MODE_GCM, nonce=iv)
+    # In AES-GCM, the actual ciphertext contains the authentication tag at the end (last 16 bytes)
+    tag_position = -16
+    plaintext = cipher.decrypt_and_verify(ciphertext[:tag_position], ciphertext[tag_position:])
+
+    return plaintext
+```
