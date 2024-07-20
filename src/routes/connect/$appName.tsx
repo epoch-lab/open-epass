@@ -23,7 +23,7 @@ function Page() {
       }),
     refetchOnWindowFocus: false,
     staleTime: 24 * 60 * 60 * 1000,
-    enabled: isUserSettingsApp,
+    enabled: !isUserSettingsApp,
   })
 
   return (
