@@ -129,3 +129,50 @@ public class EpassSauceDecryption {
     }
 }
 ```
+
+### TypeScript 示例
+
+```typescript
+function base64UrlToUint8Array(base64Url: string) {
+  base64Url = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+
+  const rawData = atob(base64Url)
+  const outputArray = new Uint8Array(rawData.length)
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
+
+async function decryptSauce(sauce: string, key: string) {
+  const ciphertextArray = base64UrlToUint8Array(sauce)
+
+  const iv = ciphertextArray.slice(0, 12)
+  const actualCiphertext = ciphertextArray.slice(12)
+
+  const encoder = new TextEncoder()
+  const keyBuffer = encoder.encode(key)
+
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    keyBuffer,
+    { name: 'AES-GCM' },
+    false,
+    ['decrypt'],
+  )
+
+  const decryptedBuffer = await crypto.subtle.decrypt(
+    {
+      name: 'AES-GCM',
+      iv: iv,
+    },
+    cryptoKey,
+    actualCiphertext,
+  )
+
+  const decoder = new TextDecoder()
+  const decryptedText = decoder.decode(decryptedBuffer)
+  return decryptedText
+}
+```
