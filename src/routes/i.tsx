@@ -74,9 +74,9 @@ function Page() {
   return (
     <div className="flex min-h-[100svh] flex-col items-center bg-gray-50 px-2">
       <div className="mt-[10vh] flex h-[600px] w-full max-w-[400px] flex-col overflow-hidden rounded-lg bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b p-4 text-lg">
+        <div className="flex items-center border-b px-4 text-lg">
           <div>我的通行证</div>
-          <AppLogo />
+          <AppLogo className="my-4 ml-auto" />
         </div>
 
         {isSuccess && (
