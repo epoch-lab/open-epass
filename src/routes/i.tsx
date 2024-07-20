@@ -81,7 +81,7 @@ function Page() {
 
         {isSuccess && (
           <div className="px-4">
-            <div className="relative mx-auto my-12 h-24 w-24">
+            <div className="relative mx-auto my-8 h-24 w-24">
               <Avatar email={data.email} className="peer h-full w-full" />
               <EditButton className="absolute -bottom-1 -right-1 peer-hover:opacity-100" />
             </div>
@@ -93,6 +93,7 @@ function Page() {
                 {data.userId}
               </Field>
               <Field title="邮箱地址">{data.email}</Field>
+              <Field title="密码">••••••</Field>
             </div>
           </div>
         )}
