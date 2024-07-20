@@ -27,7 +27,7 @@ function Page() {
 
   function handleConnectApp() {
     if (isUserSettingsApp) {
-      navigate({ to: '/i/profile' })
+      navigate({ to: '/i' })
     } else {
       mutation.mutate({ appName })
     }

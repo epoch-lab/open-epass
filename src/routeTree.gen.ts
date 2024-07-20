@@ -14,8 +14,6 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IImport } from './routes/i'
-import { Route as IIndexImport } from './routes/i/index'
-import { Route as IProfileImport } from './routes/i/profile'
 import { Route as ConnectAppNameImport } from './routes/connect/$appName'
 
 // Create Virtual Routes
@@ -54,16 +52,6 @@ const ExampleAppIndexLazyRoute = ExampleAppIndexLazyImport.update({
 } as any).lazy(() =>
   import('./routes/example-app.index.lazy').then((d) => d.Route),
 )
-
-const IIndexRoute = IIndexImport.update({
-  path: '/',
-  getParentRoute: () => IRoute,
-} as any)
-
-const IProfileRoute = IProfileImport.update({
-  path: '/profile',
-  getParentRoute: () => IRoute,
-} as any)
 
 const ConnectAppNameRoute = ConnectAppNameImport.update({
   path: '/connect/$appName',
@@ -134,20 +122,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConnectAppNameImport
       parentRoute: typeof rootRoute
     }
-    '/i/profile': {
-      id: '/i/profile'
-      path: '/profile'
-      fullPath: '/i/profile'
-      preLoaderRoute: typeof IProfileImport
-      parentRoute: typeof IImport
-    }
-    '/i/': {
-      id: '/i/'
-      path: '/'
-      fullPath: '/i/'
-      preLoaderRoute: typeof IIndexImport
-      parentRoute: typeof IImport
-    }
     '/example-app/': {
       id: '/example-app/'
       path: '/example-app'
@@ -197,7 +171,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  IRoute: IRoute.addChildren({ IProfileRoute, IIndexRoute }),
+  IRoute,
   ConnectAppNameRoute: ConnectAppNameRoute.addChildren({
     ConnectAppNameContinueLazyRoute,
     ConnectAppNameRecoveryLazyRoute,
@@ -226,11 +200,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "index.lazy.tsx"
     },
     "/i": {
-      "filePath": "i.tsx",
-      "children": [
-        "/i/profile",
-        "/i/"
-      ]
+      "filePath": "i.tsx"
     },
     "/connect/$appName": {
       "filePath": "connect/$appName.tsx",
@@ -241,14 +211,6 @@ export const routeTree = rootRoute.addChildren({
         "/connect/$appName/signup",
         "/connect/$appName/"
       ]
-    },
-    "/i/profile": {
-      "filePath": "i/profile.tsx",
-      "parent": "/i"
-    },
-    "/i/": {
-      "filePath": "i/index.tsx",
-      "parent": "/i"
     },
     "/example-app/": {
       "filePath": "example-app.index.lazy.tsx"

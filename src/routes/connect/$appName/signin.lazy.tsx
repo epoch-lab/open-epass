@@ -99,7 +99,7 @@ function Page() {
   function handleSigninSuccess(token: string) {
     setUserToken(token)
     if (isUserSettingsApp) {
-      navigate({ to: '/i/profile' })
+      navigate({ to: '/i' })
     } else {
       connectMutation.mutate({ appName })
     }

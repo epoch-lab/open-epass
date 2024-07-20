@@ -176,3 +176,9 @@ async function decryptSauce(sauce: string, key: string) {
   return decryptedText
 }
 ```
+
+## 注意
+
+1. 返回的用户基本信息中可以选择性取用；如果需要频繁调用接口，请优先考虑使用 Redis 缓存
+2. 修改密码或基本信息请引导用户到 `https://<ePass 域名>/i` 进行修改
+3. App Name 预留 `i`，请不要使用，`i` 为“我的通行证”用户设置页面的 App Name
