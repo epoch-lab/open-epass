@@ -2,10 +2,12 @@ import { getUserTokenInfo } from '@/atoms/token'
 import { AppLogo } from '@/components/app-logo'
 import { Avatar } from '@/components/avatar'
 import { useUserProfile } from '@/hooks/use-user-info'
+import { EditAvatarModal } from '@/modals/edit-avatar-modal'
+import { EditDisplayNameModal } from '@/modals/edit-display-name-modal'
 import { cn } from '@/utils/cn'
 import { IconEdit } from '@tabler/icons-react'
 import { createFileRoute, Navigate } from '@tanstack/react-router'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 export const Route = createFileRoute('/i')({
   component: Page,
@@ -60,6 +62,9 @@ function EditButton({
 
 function Page() {
   const { data, isSuccess } = useUserProfile()
+  const [editAvatarModalOpen, setEditAvatarModalOpen] = useState(false)
+  const [editDisplayNameModalOpen, setEditDisplayNameModalOpen] =
+    useState(false)
 
   if (!getUserTokenInfo().loggedIn) {
     return (
@@ -83,11 +88,19 @@ function Page() {
           <div className="px-4">
             <div className="relative mx-auto my-8 h-24 w-24">
               <Avatar email={data.email} className="peer h-full w-full" />
-              <EditButton className="absolute -bottom-1 -right-1 peer-hover:opacity-100" />
+              <EditButton
+                className="absolute -bottom-1 -right-1 peer-hover:opacity-100"
+                onClick={() => setEditAvatarModalOpen(true)}
+              />
             </div>
 
             <div className="mx-auto flex max-w-[250px] flex-col divide-y rounded-md border">
-              <Field title="展示名称">{data.displayName}</Field>
+              <Field
+                title="展示名称"
+                onEdit={() => setEditDisplayNameModalOpen(true)}
+              >
+                {data.displayName}
+              </Field>
               <Field title="用户名">{data.username}</Field>
               <Field title="用户 ID" editable={false}>
                 {data.userId}
@@ -98,6 +111,15 @@ function Page() {
           </div>
         )}
       </div>
+
+      <EditAvatarModal
+        open={editAvatarModalOpen}
+        onOpenChange={setEditAvatarModalOpen}
+      />
+      <EditDisplayNameModal
+        open={editDisplayNameModalOpen}
+        onOpenChange={setEditDisplayNameModalOpen}
+      />
     </div>
   )
 }
