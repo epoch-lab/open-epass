@@ -3,6 +3,7 @@ import { loginUserByEmail } from '#/_db/users'
 import { signUserJwt } from '#/_utils/jwt'
 import { $parseBody } from '#/_utils/request'
 import { $responseErr, $responseOk } from '#/_utils/response'
+import { turnstile } from '#/_utils/schema'
 import { $verfiyTurnstile } from '#/_utils/turnstile'
 import { z } from 'zod'
 
@@ -10,7 +11,7 @@ export const signinEmailSchema = z.object({
   email: z.string(),
   password: z.string(),
   longer: z.boolean(),
-  turnstile: z.string(),
+  turnstile,
 })
 
 export const onRequestPost: PagesFunction<Env> = async (c) => {

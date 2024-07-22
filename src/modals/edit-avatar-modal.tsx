@@ -23,10 +23,10 @@ export function EditAvatarModal({
       </div>
 
       <div className="mt-6 flex justify-end gap-3">
-        <Modal.Close>
+        <Modal.Close asChild>
           <Button variant="ghost">取消</Button>
         </Modal.Close>
-        <Modal.Close>
+        <Modal.Close asChild>
           <Button
             onClick={() => window.open('https://gravatar.com/profile/avatars')}
           >

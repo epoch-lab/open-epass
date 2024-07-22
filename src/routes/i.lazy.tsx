@@ -4,12 +4,15 @@ import { Avatar } from '@/components/avatar'
 import { useUserProfile } from '@/hooks/use-user-info'
 import { EditAvatarModal } from '@/modals/edit-avatar-modal'
 import { EditDisplayNameModal } from '@/modals/edit-display-name-modal'
+import { EditEmailModal } from '@/modals/edit-email'
+import { EditPasswordModal } from '@/modals/edit-password'
+import { EditUsernameModal } from '@/modals/edit-username'
 import { cn } from '@/utils/cn'
 import { IconEdit } from '@tabler/icons-react'
-import { createFileRoute, Navigate } from '@tanstack/react-router'
+import { createLazyFileRoute, Navigate } from '@tanstack/react-router'
 import { ReactNode, useState } from 'react'
 
-export const Route = createFileRoute('/i')({
+export const Route = createLazyFileRoute('/i')({
   component: Page,
 })
 
@@ -29,7 +32,9 @@ function Field({
   return (
     <div className="group relative px-3 py-2">
       <div className={cn('text-sm opacity-50', className)}>{title}</div>
-      <div>{children}</div>
+      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+        {children}
+      </div>
       {editable && (
         <EditButton
           onClick={onEdit}
@@ -65,6 +70,9 @@ function Page() {
   const [editAvatarModalOpen, setEditAvatarModalOpen] = useState(false)
   const [editDisplayNameModalOpen, setEditDisplayNameModalOpen] =
     useState(false)
+  const [editUsernameModalOpen, setEditUsernameModalOpen] = useState(false)
+  const [editEmailModalOpen, setEditEmailModalOpen] = useState(false)
+  const [editPasswordModalOpen, setEditPasswordModalOpen] = useState(false)
 
   if (!getUserTokenInfo().loggedIn) {
     return (
@@ -101,12 +109,24 @@ function Page() {
               >
                 {data.displayName}
               </Field>
-              <Field title="用户名">{data.username}</Field>
+              <Field
+                title="用户名"
+                onEdit={() => setEditUsernameModalOpen(true)}
+              >
+                {data.username}
+              </Field>
               <Field title="用户 ID" editable={false}>
                 {data.userId}
               </Field>
-              <Field title="邮箱地址">{data.email}</Field>
-              <Field title="密码">••••••</Field>
+              <Field
+                title="邮箱地址"
+                onEdit={() => setEditEmailModalOpen(true)}
+              >
+                {data.email}
+              </Field>
+              <Field title="密码" onEdit={() => setEditPasswordModalOpen(true)}>
+                ••••••
+              </Field>
             </div>
           </div>
         )}
@@ -119,6 +139,18 @@ function Page() {
       <EditDisplayNameModal
         open={editDisplayNameModalOpen}
         onOpenChange={setEditDisplayNameModalOpen}
+      />
+      <EditUsernameModal
+        open={editUsernameModalOpen}
+        onOpenChange={setEditUsernameModalOpen}
+      />
+      <EditEmailModal
+        open={editEmailModalOpen}
+        onOpenChange={setEditEmailModalOpen}
+      />
+      <EditPasswordModal
+        open={editPasswordModalOpen}
+        onOpenChange={setEditPasswordModalOpen}
       />
     </div>
   )

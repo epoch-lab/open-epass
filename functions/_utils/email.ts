@@ -144,3 +144,16 @@ export function sendRecoveryVerifyCodeEmail(
     exp,
   })
 }
+
+export function updateEmailVerifyCodeEmail(
+  dest: string,
+  code: string,
+  exp: number,
+) {
+  return sendCodeEmail(dest, {
+    opTitle: '修改邮箱验证',
+    opDesc: '将回声通行证绑定到此邮箱',
+    code,
+    exp,
+  })
+}

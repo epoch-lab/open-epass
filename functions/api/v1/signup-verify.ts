@@ -3,12 +3,13 @@ import { getUserByEmail } from '#/_db/users'
 import { sendSignupVerifyCodeEmail } from '#/_utils/email'
 import { $parseBody } from '#/_utils/request'
 import { $responseOk } from '#/_utils/response'
+import { email, turnstile } from '#/_utils/schema'
 import { $verfiyTurnstile } from '#/_utils/turnstile'
 import { z } from 'zod'
 
 export const signupVerifySchema = z.object({
-  email: z.string().min(1, '邮箱不能为空').email('邮箱格式不正确'),
-  turnstile: z.string().min(1, '请完成人机验证'),
+  email,
+  turnstile,
 })
 
 export const onRequestPost: PagesFunction<Env> = async (c) => {

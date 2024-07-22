@@ -1,4 +1,4 @@
-import { displayName } from '#/_utils/schema'
+import { username } from '#/_utils/schema'
 import { useUserTokenInfo } from '@/atoms/token'
 import { Button } from '@/components/button'
 import { FormError } from '@/components/form-error'
@@ -7,17 +7,17 @@ import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
 import { useUpdateProfileMutation } from '@/hooks/use-update-profile-mutation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IconUserStar } from '@tabler/icons-react'
+import { IconUser } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const schema = z.object({
-  newDisplayName: displayName,
+  newUsername: username,
 })
 
-export function EditDisplayNameModal({
+export function EditUsernameModal({
   open,
   onOpenChange,
 }: {
@@ -27,7 +27,7 @@ export function EditDisplayNameModal({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      newDisplayName: '',
+      newUsername: '',
     },
   })
 
@@ -44,6 +44,13 @@ export function EditDisplayNameModal({
         queryKey: ['user-profile', tokenInfo.loggedIn && tokenInfo.userId],
       })
     },
+    onError(e) {
+      if (e.message === 'Duplicated username') {
+        form.setError('newUsername', {
+          message: '用户名重复，换一个吧',
+        })
+      }
+    },
   })
 
   function handleUpdate(v: z.infer<typeof schema>) {
@@ -52,14 +59,14 @@ export function EditDisplayNameModal({
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <Modal.Title>修改展示名称</Modal.Title>
+      <Modal.Title>修改用户名</Modal.Title>
 
       <TextInput
-        icon={<IconUserStar stroke={1.5} size={18} />}
-        placeholder="新展示名称"
-        {...form.register('newDisplayName')}
+        icon={<IconUser stroke={1.5} size={18} />}
+        placeholder="新用户名"
+        {...form.register('newUsername')}
       />
-      <FormError error={form.formState.errors.newDisplayName} />
+      <FormError error={form.formState.errors.newUsername} />
 
       <div className="mt-6 flex justify-end gap-3">
         <Modal.Close asChild>

@@ -13,11 +13,11 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IImport } from './routes/i'
 import { Route as ConnectAppNameImport } from './routes/connect/$appName'
 
 // Create Virtual Routes
 
+const ILazyImport = createFileRoute('/i')()
 const IndexLazyImport = createFileRoute('/')()
 const ExampleAppIndexLazyImport = createFileRoute('/example-app/')()
 const ConnectAppNameIndexLazyImport = createFileRoute('/connect/$appName/')()
@@ -36,10 +36,10 @@ const ConnectAppNameContinueLazyImport = createFileRoute(
 
 // Create/Update Routes
 
-const IRoute = IImport.update({
+const ILazyRoute = ILazyImport.update({
   path: '/i',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/i.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -112,7 +112,7 @@ declare module '@tanstack/react-router' {
       id: '/i'
       path: '/i'
       fullPath: '/i'
-      preLoaderRoute: typeof IImport
+      preLoaderRoute: typeof ILazyImport
       parentRoute: typeof rootRoute
     }
     '/connect/$appName': {
@@ -171,7 +171,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  IRoute,
+  ILazyRoute,
   ConnectAppNameRoute: ConnectAppNameRoute.addChildren({
     ConnectAppNameContinueLazyRoute,
     ConnectAppNameRecoveryLazyRoute,
@@ -200,7 +200,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "index.lazy.tsx"
     },
     "/i": {
-      "filePath": "i.tsx"
+      "filePath": "i.lazy.tsx"
     },
     "/connect/$appName": {
       "filePath": "connect/$appName.tsx",

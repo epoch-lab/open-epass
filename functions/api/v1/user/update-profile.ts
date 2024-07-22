@@ -2,6 +2,7 @@ import { updateUserDisplayNameById, updateUserNameById } from '#/_db/users'
 import { $parseUserJwt } from '#/_utils/jwt'
 import { $parseBody } from '#/_utils/request'
 import { $responseOk } from '#/_utils/response'
+import { displayName, username } from '#/_utils/schema'
 import { z } from 'zod'
 
 export const onRequestPost: PagesFunction<Env> = async (c) => {
@@ -9,8 +10,8 @@ export const onRequestPost: PagesFunction<Env> = async (c) => {
   const data = await $parseBody(
     c,
     z.object({
-      newUsername: z.optional(z.string()),
-      newDisplayName: z.optional(z.string()),
+      newUsername: z.optional(username),
+      newDisplayName: z.optional(displayName),
     }),
   )
 

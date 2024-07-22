@@ -64,33 +64,38 @@ function Page() {
   }, [sauce])
 
   return (
-    <div className="max-w-screen-sm p-4 text-justify [&_p]:my-2">
-      <p>
-        点击下面的链接进行登录，此示例 App 的 appName 为 example，因此跳转到
-        /connect/example
-      </p>
-      <a href="/connect/example/" className="text-blue-500 underline">
-        登录
-      </a>
-      <p>登录成功后会携带 sauce 重定向到这个页面</p>
-      <p>
-        sauce 为 Base64URL 编码的二进制，前 12 字节为 IV，其余字节为 AES-256-GCM
-        加密的密文，密文内容为用户基本信息和 sauce 的生成时间，密钥为 App
-        Secret（本示例 App 的 App Secret 为 32 个 0）
-      </p>
-      <p>如果携带了 sauce，sauce 和解密结果将在下面显示：</p>
-      {sauce ? (
-        <>
-          <div className="break-all rounded border bg-gray-100 p-2 font-mono">
-            {sauce}
-          </div>
-          <div className="mt-4 whitespace-pre break-all rounded border bg-gray-100 p-2 font-mono">
-            {userInfo}
-          </div>
-        </>
-      ) : (
-        <p>没有携带 sauce</p>
-      )}
+    <div className="min-h-[100svh] bg-white">
+      <div className="flex max-w-screen-sm flex-col gap-2 p-4 text-justify">
+        <p>
+          点击下面的链接进行登录，此示例 App 的 appName 为 example，因此跳转到
+          /connect/example
+        </p>
+        <a href="/connect/example/" className="text-blue-500 underline">
+          登录
+        </a>
+        <p>登录成功后会携带 sauce 重定向到这个页面</p>
+        <p>
+          sauce 为 Base64URL 编码的二进制，前 12 字节为 IV，其余字节为
+          AES-256-GCM 加密的密文，密文内容为用户基本信息和 sauce
+          的生成时间，密钥为 App Secret（本示例 App 的 App Secret 为 32 个 0）
+        </p>
+        <p>如果携带了 sauce，sauce 和解密结果将在下面显示：</p>
+        {sauce ? (
+          <>
+            <div className="break-all rounded border bg-gray-100 p-2 font-mono">
+              {sauce}
+            </div>
+            <div className="mt-4 whitespace-pre break-all rounded border bg-gray-100 p-2 font-mono">
+              {userInfo}
+            </div>
+          </>
+        ) : (
+          <p>没有携带 sauce</p>
+        )}
+        <a href="/i" className="text-blue-500 underline">
+          查看我的通行证
+        </a>
+      </div>
     </div>
   )
 }
