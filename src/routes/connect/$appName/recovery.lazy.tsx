@@ -6,6 +6,7 @@ import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
+import { Title } from '@/components/title'
 import { Turnstile } from '@/components/turnstile'
 import { $fetch } from '@/utils/fetch'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -97,6 +98,7 @@ function Page() {
 
   return (
     <>
+      <Title>重置密码</Title>
       <HeroTitle>重置密码</HeroTitle>
 
       <div className="px-12 text-sm leading-loose">

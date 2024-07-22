@@ -4,6 +4,7 @@ import { Button } from '@/components/button'
 import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
+import { Title } from '@/components/title'
 import { useConnectAppMutation } from '@/hooks/use-connect-app-mutation'
 import { useUserProfile } from '@/hooks/use-user-info'
 import { IconArrowRight } from '@tabler/icons-react'
@@ -41,6 +42,7 @@ function Page() {
 
   return (
     <>
+      <Title>欢迎回来</Title>
       <HeroTitle>欢迎回来</HeroTitle>
 
       <div className="px-12 text-sm leading-loose">

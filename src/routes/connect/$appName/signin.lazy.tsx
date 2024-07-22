@@ -8,6 +8,7 @@ import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
+import { Title } from '@/components/title'
 import { Turnstile } from '@/components/turnstile'
 import { useConnectAppMutation } from '@/hooks/use-connect-app-mutation'
 import { $fetch } from '@/utils/fetch'
@@ -125,6 +126,7 @@ function Page() {
 
   return (
     <>
+      <Title>登录</Title>
       <HeroTitle>登录</HeroTitle>
 
       <div className="px-12 text-sm leading-loose">

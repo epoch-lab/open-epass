@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { Provider } from 'jotai'
+import { HelmetProvider } from 'react-helmet-async'
 
 const persister = createSyncStoragePersister({
   storage: window.localStorage,
@@ -25,11 +26,13 @@ persistQueryClient({
 export const Route = createRootRoute({
   component: () => (
     <>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <Outlet />
-        </QueryClientProvider>
-      </Provider>
+      <HelmetProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <Outlet />
+          </QueryClientProvider>
+        </Provider>
+      </HelmetProvider>
     </>
   ),
 })

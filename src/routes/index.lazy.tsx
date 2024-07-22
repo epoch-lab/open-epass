@@ -1,9 +1,19 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { getUserTokenInfo } from '@/atoms/token'
+import { createLazyFileRoute, Navigate } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/')({
   component: Page,
 })
 
 function Page() {
-  return <p>hello world</p>
+  if (!getUserTokenInfo().loggedIn) {
+    return (
+      <Navigate
+        to="/connect/$appName/signin"
+        params={{ appName: 'i' }}
+        replace
+      />
+    )
+  }
+  return <Navigate to="/i" replace />
 }

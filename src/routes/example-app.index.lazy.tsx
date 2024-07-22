@@ -1,3 +1,4 @@
+import { Title } from '@/components/title'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
@@ -65,6 +66,7 @@ function Page() {
 
   return (
     <div className="min-h-[100svh] bg-white">
+      <Title>示例 App</Title>
       <div className="flex max-w-screen-sm flex-col gap-2 p-4 text-justify">
         <p>
           点击下面的链接进行登录，此示例 App 的 appName 为 example，因此跳转到

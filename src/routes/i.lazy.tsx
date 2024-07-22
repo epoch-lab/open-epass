@@ -1,6 +1,7 @@
 import { getUserTokenInfo } from '@/atoms/token'
 import { AppLogo } from '@/components/app-logo'
 import { Avatar } from '@/components/avatar'
+import { Title } from '@/components/title'
 import { useUserProfile } from '@/hooks/use-user-info'
 import { EditAvatarModal } from '@/modals/edit-avatar-modal'
 import { EditDisplayNameModal } from '@/modals/edit-display-name-modal'
@@ -86,6 +87,7 @@ function Page() {
 
   return (
     <div className="flex min-h-[100svh] flex-col items-center bg-gray-50 px-2">
+      <Title>我的</Title>
       <div className="mt-[10vh] flex h-[600px] w-full max-w-[400px] flex-col overflow-hidden rounded-lg bg-white shadow-xl">
         <div className="flex items-center border-b px-4 text-lg">
           <div>我的通行证</div>
