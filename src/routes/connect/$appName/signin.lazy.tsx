@@ -168,7 +168,10 @@ function Page() {
             记住我
           </label>
 
-          <Turnstile className="self-center" onVerify={handleTurnstileVerify} />
+          <Turnstile
+            className="mt-4 self-center"
+            onVerify={handleTurnstileVerify}
+          />
           <FormError error={form.formState.errors.turnstile} />
         </div>
 
