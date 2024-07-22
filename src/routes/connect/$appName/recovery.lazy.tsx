@@ -6,7 +6,7 @@ import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
-import { CLOUDFLARE_TURNSTILE_SITE_KEY } from '@/configs'
+import { Turnstile } from '@/components/turnstile'
 import { $fetch } from '@/utils/fetch'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -19,7 +19,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Turnstile from 'react-turnstile'
+import { useTurnstile } from 'react-turnstile'
 import { z } from 'zod'
 
 export const Route = createLazyFileRoute('/connect/$appName/recovery')({
@@ -32,6 +32,7 @@ type RecoveryFields = z.infer<typeof recoverySchema>
 function Page() {
   const [stage, setStage] = useState<'verify' | 'recovery' | 'done'>('verify')
 
+  const turnstile = useTurnstile()
   const navigate = useNavigate()
 
   const verifyForm = useForm<VerifyFields>({
@@ -55,6 +56,9 @@ function Page() {
       setStage('recovery')
     },
     onError(e) {
+      turnstile.reset()
+      verifyForm.setValue('turnstile', '')
+
       if (e.message === 'Invalid Turnstile token') {
         verifyForm.setError('turnstile', {
           message: '验证无效，请重试',
@@ -113,11 +117,7 @@ function Page() {
             <FormError error={verifyForm.formState.errors.email} />
 
             <Turnstile
-              className="self-center bg-[#fafafa]"
-              sitekey={CLOUDFLARE_TURNSTILE_SITE_KEY}
-              refreshExpired="auto"
-              retry="never"
-              fixedSize
+              className="self-center"
               onVerify={handleTurnstileVerify}
             />
             <FormError error={verifyForm.formState.errors.turnstile} />

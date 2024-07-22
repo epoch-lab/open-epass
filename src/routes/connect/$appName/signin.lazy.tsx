@@ -8,7 +8,7 @@ import { HeroTitle } from '@/components/hero-title'
 import { Link } from '@/components/link'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
-import { CLOUDFLARE_TURNSTILE_SITE_KEY } from '@/configs'
+import { Turnstile } from '@/components/turnstile'
 import { useConnectAppMutation } from '@/hooks/use-connect-app-mutation'
 import { $fetch } from '@/utils/fetch'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,7 +16,7 @@ import { IconArrowRight, IconLock, IconUser } from '@tabler/icons-react'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Controller, useForm } from 'react-hook-form'
-import Turnstile, { useTurnstile } from 'react-turnstile'
+import { useTurnstile } from 'react-turnstile'
 import { z } from 'zod'
 
 export const Route = createLazyFileRoute('/connect/$appName/signin')({
@@ -166,14 +166,7 @@ function Page() {
             记住我
           </label>
 
-          <Turnstile
-            className="mt-4 self-center bg-[#fafafa]"
-            sitekey={CLOUDFLARE_TURNSTILE_SITE_KEY}
-            refreshExpired="auto"
-            retry="never"
-            fixedSize
-            onVerify={handleTurnstileVerify}
-          />
+          <Turnstile className="self-center" onVerify={handleTurnstileVerify} />
           <FormError error={form.formState.errors.turnstile} />
         </div>
 

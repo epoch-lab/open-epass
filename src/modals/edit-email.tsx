@@ -6,14 +6,14 @@ import { FormError } from '@/components/form-error'
 import { Modal } from '@/components/modal'
 import { Spinner } from '@/components/spinner'
 import { TextInput } from '@/components/text-input'
-import { CLOUDFLARE_TURNSTILE_SITE_KEY } from '@/configs'
+import { Turnstile } from '@/components/turnstile'
 import { $fetch, $userAuthHeader } from '@/utils/fetch'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IconMail, IconMailCheck } from '@tabler/icons-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Turnstile from 'react-turnstile'
+import { useTurnstile } from 'react-turnstile'
 import { z } from 'zod'
 
 export function EditEmailModal({
@@ -25,6 +25,7 @@ export function EditEmailModal({
 }) {
   const [stage, setStage] = useState<'verify' | 'update'>('verify')
 
+  const turnstile = useTurnstile()
   const queryClient = useQueryClient()
   const tokenInfo = useUserTokenInfo()
 
@@ -63,6 +64,9 @@ export function EditEmailModal({
       setStage('update')
     },
     onError(e) {
+      turnstile.reset()
+      verifyForm.setValue('turnstile', '')
+
       if (e.message === 'Invalid Turnstile token') {
         verifyForm.setError('turnstile', { message: '验证无效，请重试' })
       }
@@ -112,14 +116,7 @@ export function EditEmailModal({
           />
           <FormError error={verifyForm.formState.errors.newEmail} />
 
-          <Turnstile
-            className="bg-[#fafafa]"
-            sitekey={CLOUDFLARE_TURNSTILE_SITE_KEY}
-            refreshExpired="auto"
-            retry="never"
-            fixedSize
-            onVerify={handleTurnstileVerify}
-          />
+          <Turnstile onVerify={handleTurnstileVerify} />
           <FormError error={verifyForm.formState.errors.turnstile} />
         </>
       )}
