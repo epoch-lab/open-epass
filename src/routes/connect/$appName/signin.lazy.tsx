@@ -112,7 +112,10 @@ function Page() {
     form.resetField('password')
 
     if (error.message === 'Invalid username or password') {
-      form.setError('password', { message: '账号或密码不正确' })
+      form.setError('password', { message: '用户名或密码不正确' })
+    }
+    if (error.message === 'Invalid email or password') {
+      form.setError('password', { message: '邮箱或密码不正确' })
     }
     if (error.message === 'Invalid Turnstile token') {
       form.setError('turnstile', { message: '验证无效，请重试' })
