@@ -32,7 +32,7 @@
 
 ## 接入说明
 
-1. 使用管理员登陆 ePass，创建 App
+1. 登录 Cloudflare，编辑对应的 D1 数据库，创建 App
 
    **`App Name`** App 名字，kebab-case 格式
 
