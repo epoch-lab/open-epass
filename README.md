@@ -185,5 +185,5 @@ async function decryptSauce(sauce: string, key: string) {
 
 ## 改进
 
-- [] 实现管理员界面
-- [] 支持自定义重定向 URL，并对传入的重定向 URL 进行校验（正则表达式），防止滥用
+- [ ] 实现管理员界面
+- [ ] 支持自定义重定向 URL，并对传入的重定向 URL 进行校验（正则表达式），防止滥用
